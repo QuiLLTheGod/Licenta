@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Licenta</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_user">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="text_login">Login</string>
+    <string name="text_register">Register</string>
+    <string name="error_message_name">Enter Full Name</string>
+    <string name="error_message_email">Enter Valid Email</string>
+    <string name="error_message_password">Enter valid Password</string>
+    <string name="succes_message">Success</string>
+    <string name="text_not_member">No account yet? Create one</string>
+    <string name="text_already_member">Already a member? Login</string>
+    <string name="error_email_exists">Email already exists</string>
+    <string name="error_password_match">Password does not match</string>
+    <string name="error_valid_username_password">Wrong username or password</string>
+    <item name="visible" type="id" />
+    <item name="masked" type="id" />
+    <string-array name="countries">
+        <item>Australia</item>
+        <item>Australia</item>
+        <item>Australia</item>
+        <item>Australia</item>
+
+    </string-array>
+</resources>
