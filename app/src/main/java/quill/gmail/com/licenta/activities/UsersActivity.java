@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import quill.gmail.com.licenta.R;
+import quill.gmail.com.licenta.model.Item;
 import quill.gmail.com.licenta.model.User;
 import quill.gmail.com.licenta.sql.DatabaseHelper;
 
@@ -25,6 +26,7 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
     private Button buttonNewPassword;
     private DatabaseHelper databaseHelper;
     private ListView listView;
+    private int[] passwordIDs;
 
     protected void onCreate(Bundle savedInstanceStates){
         super.onCreate(savedInstanceStates);
@@ -33,10 +35,10 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
         buttonNewPassword = (Button) findViewById(R.id.buttonNewPassword);
         listView =(ListView) findViewById(R.id.User_ListView);
         databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
-
+        passwordIDs = databaseHelper.getPasswordIDs();
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(UsersActivity.this,
-                android.R.layout.simple_list_item_1, databaseHelper.getPasswords());
+                android.R.layout.simple_list_item_1, databaseHelper.getPasswordNames());
         listView.setAdapter(arrayAdapter);
         setListeners();
     }
@@ -78,7 +80,8 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(UsersActivity.this, ItemDetailsActivity.class);
+        intent.putExtra("ID", passwordIDs[i]);
         intent.putExtra("Nume", listView.getItemAtPosition(i).toString());
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 }

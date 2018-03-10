@@ -6,4 +6,15 @@
     android:layout_height="match_parent"
     tools:context="quill.gmail.com.licenta.activities.ItemDetailsActivity">
 
+    <Button
+        android:id="@+id/buttonItemDetailsDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

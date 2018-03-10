@@ -73,6 +73,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_PASSWORDS,null,  values);
     }
 
+    public void deletePassword(String name, String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereArgs[] = {id};
+        String whereClause = "password_id=?";
+
+        db.delete(TABLE_PASSWORDS, whereClause, whereArgs);
+    }
+
     public boolean checkUser(String user){
         String[] columns = {
                 COLUMN_USER_ID
@@ -97,7 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         As putea returna obiecte de tip ? si popula array-ul cu alea
 
      */
-    public List<String> getPasswords(){
+    public List<String> getPasswordNames(){
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns  = new String[] {  COLUMN_PASSWORD };
         List<String> result = new ArrayList<String>();
@@ -106,6 +114,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int ICM = c.getColumnIndex(COLUMN_PASSWORD);
         for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
             result.add(c.getString(ICM));
+        }
+        return result;
+    }
+    public int[] getPasswordIDs(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] columns  = new String[] {  COLUMN_PASSWORD_ID };
+        int[] result = new int[100];
+        int counter = 0;
+        Cursor c = db.query(TABLE_PASSWORDS, columns,
+                null, null, null, null, null);
+        int ICM = c.getColumnIndex(COLUMN_PASSWORD_ID);
+        for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
+            result[counter] = c.getInt(ICM);
+            counter++;
         }
         return result;
     }
