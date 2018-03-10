@@ -50,7 +50,7 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()){
             case R.id.buttonNewPassword:
                 Intent intent = new Intent(getApplicationContext(), NewPasswordActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
                 break;
                 /*
                 *   Maybe add extra features?
@@ -58,6 +58,15 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
                 * */
             default:
                 break;
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(resultCode==RESULT_OK){
+            Intent refresh = new Intent(this, UsersActivity.class);
+            startActivity(refresh);
+            this.finish();
         }
     }
 

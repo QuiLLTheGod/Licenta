@@ -101,10 +101,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns  = new String[] {  COLUMN_PASSWORD };
         List<String> result = new ArrayList<String>();
-        Item item  =  new Item();
-        item.setPassword("xxx");
-        item.setData("xy");
-        this.addPassword(item);
         Cursor c = db.query(TABLE_PASSWORDS, columns,
                   null, null, null, null, null);
         int ICM = c.getColumnIndex(COLUMN_PASSWORD);

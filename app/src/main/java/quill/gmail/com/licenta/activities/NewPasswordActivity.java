@@ -50,11 +50,14 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.buttonCancel:
+                setResult(RESULT_OK,null);
                 finish();
                 break;
 
             case R.id.buttonConfirm:
                 postDataToSQL();
+                setResult(RESULT_OK,null);
+                this.finish();
                 break;
         }
     }
