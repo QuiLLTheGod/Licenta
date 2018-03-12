@@ -25,4 +25,8 @@
         <item>Australia</item>
 
     </string-array>
+    <string name="password_length">Password length:</string>
+    <string name="passsword_options">Password options:</string>
+    <string name="high_char">A-Z</string>
+    <string name="low_char">a-z</string>
 </resources>
