@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "priseceanpaul.gmail.com.sqelitetutorial"
+        applicationId "quill.gmail.com.licenta"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 1

@@ -15,6 +15,16 @@
     <string name="text_already_member">Already a member? Login</string>
     <string name="error_email_exists">Email already exists</string>
     <string name="error_password_match">Password does not match</string>
+    <string name="password_length">Password length:</string>
+    <string name="password_options">Password options:</string>
+    <string name="high_char">A-Z</string>
+    <string name="low_char">a-z</string>
+    <string name="more_options">Extra</string>
+    <string name="numbers">0-9</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="generate">Generate </string>
+    <string name="special">Special</string>
     <string name="error_valid_username_password">Wrong username or password</string>
     <item name="visible" type="id" />
     <item name="masked" type="id" />
@@ -25,8 +35,5 @@
         <item>Australia</item>
 
     </string-array>
-    <string name="password_length">Password length:</string>
-    <string name="passsword_options">Password options:</string>
-    <string name="high_char">A-Z</string>
-    <string name="low_char">a-z</string>
+
 </resources>
