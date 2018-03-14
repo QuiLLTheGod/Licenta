@@ -15,7 +15,7 @@
     <string name="text_already_member">Already a member? Login</string>
     <string name="error_email_exists">Email already exists</string>
     <string name="error_password_match">Password does not match</string>
-    <string name="password_length">Password length:</string>
+    <string name="password_length">Password length: </string>
     <string name="password_options">Password options:</string>
     <string name="high_char">A-Z</string>
     <string name="low_char">a-z</string>

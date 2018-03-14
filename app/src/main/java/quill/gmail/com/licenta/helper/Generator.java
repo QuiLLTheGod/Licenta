@@ -39,7 +39,7 @@ public class Generator {
         randomizer = new Random();
     }
 
-    private void createChoices(){
+    private boolean createChoices(){
         if(highChar)
             options +=HIGH;
         if(lowChar)
@@ -48,19 +48,23 @@ public class Generator {
             options +=NR;
         if(specialChar)
             options +=SPECIAL;
-        if(options !=null)
+        if(!options.isEmpty()) {
             choices = options.toCharArray();
+            return true;
+        }
         else
             password = "FAILED/NULL password";
+        return false;
     }
 
     public void generatePassword(){
         StringBuilder stringBuilder = new StringBuilder(length);
-        createChoices();
-        for(int i= 0;i<length;i++){
-            stringBuilder.append(choices[randomizer.nextInt(choices.length)]);
+        if(createChoices()) {
+            for (int i = 0; i < length; i++) {
+                stringBuilder.append(choices[randomizer.nextInt(choices.length)]);
+            }
+            password = stringBuilder.toString();
         }
-        password = stringBuilder.toString();
     }
 
     public String getPassword() {

@@ -33,6 +33,8 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
     private TextView textViewGenPass;
     private String password;
 
+    private TextView lengthTextView;
+
     private Generator generator;
 
     private void initViews(){
@@ -52,6 +54,9 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
 
         numberSeekbar = findViewById(R.id.numbersSeekbar);
         lengthSeekbar = findViewById(R.id.lengthSeekbar);
+
+        lengthTextView = findViewById(R.id.lengthTextView);
+
     }
 
     private void initListeners(){
@@ -63,6 +68,23 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
         lowcharSwitch.setOnCheckedChangeListener(this);
         specialSwitch.setOnCheckedChangeListener(this);
         numbersSwitch.setOnCheckedChangeListener(this);
+
+        lengthSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                lengthTextView.setText(getResources().getString(R.string.password_length)+String.valueOf(i));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     private void initObjects(){
