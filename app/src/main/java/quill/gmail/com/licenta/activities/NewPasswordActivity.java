@@ -137,7 +137,7 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
         salt = BCrypt.gensalt();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             Cripter cripter = new Cripter();
-            encryptedSalt = cripter.getEncryptedString(salt);
+            encryptedSalt = cripter.getEncryptedString("ABC");
             encryptedSalt = cripter.getDecryptedString();
         }
 
