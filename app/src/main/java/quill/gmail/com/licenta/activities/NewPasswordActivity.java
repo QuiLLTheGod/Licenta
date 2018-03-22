@@ -11,6 +11,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import quill.gmail.com.licenta.R;
+import quill.gmail.com.licenta.helper.BCrypt;
+import quill.gmail.com.licenta.helper.Cripter;
 import quill.gmail.com.licenta.helper.Generator;
 import quill.gmail.com.licenta.model.Item;
 import quill.gmail.com.licenta.model.User;
@@ -32,6 +34,8 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
     private Switch specialSwitch;
     private TextView textViewGenPass;
     private String password;
+
+    private int seekBarLength;
 
     private TextView lengthTextView;
 
@@ -72,6 +76,7 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
         lengthSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                seekBarLength = i;
                 lengthTextView.setText(getResources().getString(R.string.password_length)+String.valueOf(i));
             }
 
@@ -124,10 +129,20 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
 
     private void createGenerator() {
         generator = new Generator(highcharSwitch.isChecked(), lowcharSwitch.isChecked(),
-                specialSwitch.isChecked(), 0, 5);
+                specialSwitch.isChecked(), 0, seekBarLength);
         generator.generatePassword();
         password = generator.getPassword();
-        textViewGenPass.setText(password);
+        String salt;
+        String encryptedSalt = null;
+        salt = BCrypt.gensalt();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            Cripter cripter = new Cripter();
+            encryptedSalt = cripter.getEncryptedString(salt);
+            encryptedSalt = cripter.getDecryptedString();
+        }
+
+        String hashed_password = BCrypt.hashpw(password, salt);
+        textViewGenPass.setText(encryptedSalt);
     }
 
     private void postDataToSQL() {
