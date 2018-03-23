@@ -10,7 +10,22 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
+import java.security.UnrecoverableEntryException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import quill.gmail.com.licenta.R;
+import quill.gmail.com.licenta.helper.BCrypt;
+import quill.gmail.com.licenta.helper.Encryptor;
 import quill.gmail.com.licenta.helper.InputValidation;
 import quill.gmail.com.licenta.model.User;
 import quill.gmail.com.licenta.sql.DatabaseHelper;
@@ -111,13 +126,43 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if(!inputValidation.isInputEditTextMatches(textInputEditPassword, textInputLayoutConfirmPassword, textInputEditConfirmPassword,  getString(R.string.error_password_match))){
             return;
         }
-        if(!databaseHelper.checkUser(textInputEditEmail.getText().toString().trim())){
+        if(!databaseHelper.checkUser(textInputEditEmail.getText().toString().trim(),"randomPassword")){
 
             user.setEmail(textInputEditEmail.getText().toString().trim());
-            //user.setName(textInputEditName.getText().toString().trim());
             User.NAME = textInputEditName.getText().toString().trim();
             user.setPassword(textInputEditPassword.getText().toString().trim());
-
+            user.setName(textInputEditName.getText().toString().trim());
+            String salt = BCrypt.gensalt();
+            Encryptor encryptor = new Encryptor();
+            try {
+                encryptor.encryptText(salt);
+                byte[] encryptedSalt = encryptor.getEncryption();
+                user.setSalt(encryptedSalt);
+            } catch (UnrecoverableEntryException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (KeyStoreException e) {
+                e.printStackTrace();
+            } catch (NoSuchProviderException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InvalidAlgorithmParameterException e) {
+                e.printStackTrace();
+            } catch (SignatureException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            }
+            String hashedPassword = BCrypt.hashpw(textInputEditPassword.getText().toString().trim(), salt);
+            user.setHash(hashedPassword);
             databaseHelper.addUser(user);
 
             Snackbar.make(nestedScrollView, getString(R.string.succes_message), Snackbar.LENGTH_LONG).show();

@@ -6,10 +6,24 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import quill.gmail.com.licenta.helper.BCrypt;
+import quill.gmail.com.licenta.helper.Decryptor;
 import quill.gmail.com.licenta.model.Item;
 import quill.gmail.com.licenta.model.User;
 
@@ -24,20 +38,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USER_NAME = "user_name";
     private static final String COLUMN_USER_EMAIL = "user_email";
     private static final String COLUMN_USER_PASSWORD = "user_password";
+    private static final String COLUMN_USER_HASH = "user_hash";
+    private static final String COLUMN_USER_SALT = "user_salt";
+
 
     private static final String TABLE_PASSWORDS = "passwords";
     private static final String COLUMN_PASSWORD_ID = "password_id";
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_PASSWORD_REF = "password_ref";
     private static final String COLUMN_PASSWORD_SALT = "password_salt";
-    private static final String COLUMN_PASSWORD_EMAIL = "password_email";
     private SQLiteDatabase database;
 
     private String CREATE_USER_TABLE = "CREATE TABLE "
             + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_USER_NAME + " TEXT,"
-            + COLUMN_USER_EMAIL + " TEXT,"
+            + COLUMN_USER_HASH + " TEXT,"
+            + COLUMN_USER_SALT + " data BLOB,"
             + COLUMN_USER_PASSWORD + " TEXT" + ")";
 
     public String CREATE_PASSWORD_TABLE = "CREATE TABLE "
@@ -56,6 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_PASSWORD_TABLE);
+        database = db;
     }
 
     @Override
@@ -70,6 +88,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_USER_NAME, user.NAME);
         values.put(COLUMN_USER_EMAIL, user.getEmail());
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(COLUMN_USER_HASH, user.getHash());
+        values.put(COLUMN_USER_SALT, user.getSalt());
         db.insert(TABLE_USER, null, values);
     }
 
@@ -90,22 +110,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_PASSWORDS, whereClause, whereArgs);
     }
 
-    public boolean checkUser(String user){
+    public boolean checkUser(String user, String password){
         String[] columns = {
-                COLUMN_USER_ID
+                COLUMN_USER_ID,
+                COLUMN_USER_SALT,
+                COLUMN_USER_HASH,
+                COLUMN_USER_NAME
         };
         SQLiteDatabase db = this.getWritableDatabase();
-        String selection = COLUMN_USER_NAME + " = ?";
+        String selection = COLUMN_USER_NAME + "=?";
         String[] selectionArgs = {user};
 
         Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null,
         null, null);
         int cursorCount = cursor.getCount();
+
+        if(cursorCount > 0){
+            try {
+                Decryptor decryptor = new Decryptor();
+                String decryptedSalt = decryptor.decryptData(cursor.getBlob(cursor.getColumnIndex(COLUMN_USER_SALT)));
+                BCrypt bCrypt = new BCrypt();
+                if(bCrypt.checkpw(password, cursor.getString(cursor.getColumnIndex(COLUMN_USER_HASH)))){
+                    return true;
+                }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (KeyStoreException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (CertificateException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (UnrecoverableEntryException e) {
+                e.printStackTrace();
+            } catch (InvalidAlgorithmParameterException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (NoSuchProviderException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            }
+        }
         cursor.close();
         db.close();
-        if(cursorCount > 0){
-            return true;
-        }
         return false;
     }
 

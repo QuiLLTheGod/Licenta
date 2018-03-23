@@ -9,7 +9,10 @@ public class User {
     private int id;
     public static String NAME;
     private String email;
+    private String name;
     private String password;
+    private String hash;
+    private byte[] salt;
     public int getId(){
         return id;
     }
@@ -34,4 +37,27 @@ public class User {
         this.password = password;
     }
 
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
