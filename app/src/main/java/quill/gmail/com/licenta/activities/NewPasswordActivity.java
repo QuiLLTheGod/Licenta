@@ -51,6 +51,7 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
     private String password;
 
     private int seekBarLength;
+    private byte[] saltData;
 
     private TextView lengthTextView;
 
@@ -153,17 +154,13 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
 
             try {
                 Encryptor encryptor = new Encryptor();
-                encryptor.encryptText(salt);
-                byte[] temp = encryptor.getEncryption();
-                Decryptor decryptor = new Decryptor();
-                encryptedSalt = decryptor.decryptData(temp);
+                encryptor.encryptText(password);
+                saltData= encryptor.getEncryption();
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             } catch (KeyStoreException e) {
                 e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (CertificateException e) {
                 e.printStackTrace();
             } catch (SignatureException e) {
                 e.printStackTrace();
@@ -182,19 +179,17 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
             } catch (IllegalBlockSizeException e) {
                 e.printStackTrace();
             }
-            //encryptedSalt = cripter.getEncryptedString("ABC");
-            //encryptedSalt = cripter.getDecryptedString(encryptedSalt);
         }
 
         String hashed_password = BCrypt.hashpw(password, salt);
-        textViewGenPass.setText(String.valueOf(encryptedSalt));
+        textViewGenPass.setText(password);
     }
 
     private void postDataToSQL() {
         databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
-
-        item.setData("");
-        item.setPassword(password);
+        item.setData("baie");
+        item.setPassword("apa");
+        item.setSalt(saltData);
 
         databaseHelper.addPassword(item);
     }

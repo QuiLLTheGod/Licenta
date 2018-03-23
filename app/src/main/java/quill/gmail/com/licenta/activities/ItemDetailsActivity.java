@@ -25,7 +25,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_item_details);
         extras = getIntent().getExtras();
         if(extras!=null){
-            // listview id starts from 0 while SQLIte starts from 1 so we need to increment by 1
             id = String.valueOf(extras.getInt("ID"));
             name =  extras.getString("Nume");
         }

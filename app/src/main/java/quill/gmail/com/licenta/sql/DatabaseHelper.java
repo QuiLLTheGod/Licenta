@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,15 +29,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PASSWORD_ID = "password_id";
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_PASSWORD_REF = "password_ref";
+    private static final String COLUMN_PASSWORD_SALT = "password_salt";
     private static final String COLUMN_PASSWORD_EMAIL = "password_email";
     private SQLiteDatabase database;
 
-    private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
-            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
-            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT" + ")";
+    private String CREATE_USER_TABLE = "CREATE TABLE "
+            + TABLE_USER + "("
+            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_USER_NAME + " TEXT,"
+            + COLUMN_USER_EMAIL + " TEXT,"
+            + COLUMN_USER_PASSWORD + " TEXT" + ")";
 
-    private String CREATE_PASSWORD_TABLE = "CREATE TABLE " + TABLE_PASSWORDS + "("
-            + COLUMN_PASSWORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_PASSWORD + " TEXT,"
+    public String CREATE_PASSWORD_TABLE = "CREATE TABLE "
+            + TABLE_PASSWORDS + "("
+            + COLUMN_PASSWORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_PASSWORD + " TEXT,"
+            + COLUMN_PASSWORD_SALT + " data BLOB,"
             + COLUMN_PASSWORD_REF + " TEXT" +")";
 
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
@@ -70,6 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_PASSWORD, item.getPassword());
         values.put(COLUMN_PASSWORD_REF, item.getData());
+        values.put(COLUMN_PASSWORD_SALT, item.getSalt());
         db.insert(TABLE_PASSWORDS,null,  values);
     }
 
@@ -130,5 +139,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             counter++;
         }
         return result;
+    }
+
+    public ArrayList<Item> getItems(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] columns  = new String[] {  COLUMN_PASSWORD_ID, COLUMN_PASSWORD_SALT, COLUMN_PASSWORD};
+        ArrayList<Item> list = new ArrayList<>();
+
+        Cursor c = db.query(TABLE_PASSWORDS, columns,
+                null, null, null, null, null);
+        for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
+            list.add(new Item(
+                    c.getString(c.getColumnIndex(COLUMN_PASSWORD)),
+                    c.getInt(c.getColumnIndex(COLUMN_PASSWORD_ID)),
+                    c.getBlob(c.getColumnIndex(COLUMN_PASSWORD_SALT))));
+        }
+        return list;
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
+    public void exeSQL(String string){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(DROP_PASSWORD_TABLE);
+        db.execSQL(string);
     }
 }

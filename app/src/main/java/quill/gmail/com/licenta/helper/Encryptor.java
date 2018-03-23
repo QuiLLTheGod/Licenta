@@ -8,11 +8,14 @@ import android.support.annotation.NonNull;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -32,6 +35,7 @@ public class Encryptor {
     private static final String TRANSFORMATION = "AES/GCM/NoPadding";
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
     private static final String ALIAS = User.NAME;
+    private KeyStore keyStore;
     private byte[] encryption;
     private byte[] iv;
 
@@ -55,7 +59,25 @@ public class Encryptor {
     @NonNull
     private SecretKey getSecretKey() throws NoSuchAlgorithmException,
             NoSuchProviderException, InvalidAlgorithmParameterException {
-
+        try {
+            keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
+            keyStore.load(null);
+            KeyStore.SecretKeyEntry secretKeyEntry = (KeyStore.SecretKeyEntry) keyStore.getEntry(ALIAS, null);
+            return secretKeyEntry.getSecretKey();
+        } catch (UnrecoverableEntryException e) {
+            return generateSecretKey();
+        } catch (KeyStoreException e) {
+            return generateSecretKey();
+        } catch (CertificateException e) {
+            return generateSecretKey();
+        } catch (IOException e) {
+            return generateSecretKey();
+        }
+        catch (NullPointerException e){
+            return generateSecretKey();
+        }
+    }
+    private SecretKey generateSecretKey() throws InvalidAlgorithmParameterException, NoSuchProviderException, NoSuchAlgorithmException {
         final KeyGenerator keyGenerator = KeyGenerator
                 .getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE);
 
@@ -66,7 +88,6 @@ public class Encryptor {
                     .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
                     .build());
         }
-
         return keyGenerator.generateKey();
     }
 

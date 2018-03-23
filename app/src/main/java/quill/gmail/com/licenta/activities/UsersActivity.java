@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import quill.gmail.com.licenta.R;
 import quill.gmail.com.licenta.model.Item;
 import quill.gmail.com.licenta.model.User;
@@ -27,6 +29,7 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
     private DatabaseHelper databaseHelper;
     private ListView listView;
     private int[] passwordIDs;
+    private ArrayList<Item> arrayListOfItems;
 
     protected void onCreate(Bundle savedInstanceStates){
         super.onCreate(savedInstanceStates);
@@ -36,9 +39,14 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
         listView =(ListView) findViewById(R.id.User_ListView);
         databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
         passwordIDs = databaseHelper.getPasswordIDs();
+        arrayListOfItems = databaseHelper.getItems();
+        ArrayList<String> strings = new ArrayList<>();
+        for (Item i: arrayListOfItems) {
+            strings.add(i.getDecryptedPassword());
 
+        }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(UsersActivity.this,
-                android.R.layout.simple_list_item_1, databaseHelper.getPasswordNames());
+                android.R.layout.simple_list_item_1, strings);
         listView.setAdapter(arrayAdapter);
         setListeners();
     }
@@ -80,8 +88,8 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(UsersActivity.this, ItemDetailsActivity.class);
-        intent.putExtra("ID", passwordIDs[i]);
-        intent.putExtra("Nume", listView.getItemAtPosition(i).toString());
+        intent.putExtra("ID", arrayListOfItems.get(i).getId());
+        intent.putExtra("Nume", arrayListOfItems.get(i).getDecryptedPassword());
         startActivityForResult(intent, 1);
     }
 }
