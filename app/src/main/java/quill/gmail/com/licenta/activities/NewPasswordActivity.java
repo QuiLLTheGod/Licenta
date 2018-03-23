@@ -10,9 +10,24 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import quill.gmail.com.licenta.R;
 import quill.gmail.com.licenta.helper.BCrypt;
-import quill.gmail.com.licenta.helper.Cripter;
+import quill.gmail.com.licenta.helper.Decryptor;
+import quill.gmail.com.licenta.helper.Encryptor;
 import quill.gmail.com.licenta.helper.Generator;
 import quill.gmail.com.licenta.model.Item;
 import quill.gmail.com.licenta.model.User;
@@ -101,7 +116,6 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_password);
-
         initViews();
         initListeners();
         initObjects();
@@ -136,13 +150,44 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
         String encryptedSalt = null;
         salt = BCrypt.gensalt();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            Cripter cripter = new Cripter();
-            encryptedSalt = cripter.getEncryptedString("ABC");
-            encryptedSalt = cripter.getDecryptedString();
+
+            try {
+                Encryptor encryptor = new Encryptor();
+                encryptor.encryptText(salt);
+                byte[] temp = encryptor.getEncryption();
+                Decryptor decryptor = new Decryptor();
+                encryptedSalt = decryptor.decryptData(temp);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (KeyStoreException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (CertificateException e) {
+                e.printStackTrace();
+            } catch (SignatureException e) {
+                e.printStackTrace();
+            } catch (UnrecoverableEntryException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (InvalidAlgorithmParameterException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (NoSuchProviderException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            }
+            //encryptedSalt = cripter.getEncryptedString("ABC");
+            //encryptedSalt = cripter.getDecryptedString(encryptedSalt);
         }
 
         String hashed_password = BCrypt.hashpw(password, salt);
-        textViewGenPass.setText(encryptedSalt);
+        textViewGenPass.setText(String.valueOf(encryptedSalt));
     }
 
     private void postDataToSQL() {
