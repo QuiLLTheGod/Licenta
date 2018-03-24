@@ -98,33 +98,35 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v){
         switch (v.getId()){
             case R.id.appCompatButtonRegister:
-                postDataToSQLite();
+                if(postDataToSQLite()) {
+                    finish();
+                }
                 break;
             case R.id.appCompatTextViewLinkLogin:
                 finish();
                 break;
         }
     }
-    private void postDataToSQLite(){
+    private boolean postDataToSQLite(){
 
         databaseHelper = new DatabaseHelper(activity, textInputEditName.getText().toString().trim());
 
         if(!inputValidation.isinputEditTextFilled(textInputEditName, textInputLayoutName, getString(R.string.error_message_name))){
-            return;
+            return false;
         }
         if(!inputValidation.isinputEditTextFilled(textInputEditEmail, textInputLayoutEmail, getString(R.string.error_message_email))){
-            return;
+            return false;
         }
         if(!inputValidation.isinputEditTextFilled(textInputEditPassword, textInputLayoutPassword, getString(R.string.error_message_password))){
-            return;
+            return false;
         }
 
         if(!inputValidation.isInputEditTextEmail(textInputEditEmail, textInputLayoutEmail, getString(R.string.error_message_email))){
-            return;
+            return false;
         }
 
         if(!inputValidation.isInputEditTextMatches(textInputEditPassword, textInputLayoutConfirmPassword, textInputEditConfirmPassword,  getString(R.string.error_password_match))){
-            return;
+            return false;
         }
         if(!databaseHelper.checkUser(textInputEditEmail.getText().toString().trim(),"randomPassword")){
 
@@ -133,44 +135,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             user.setPassword(textInputEditPassword.getText().toString().trim());
             user.setName(textInputEditName.getText().toString().trim());
             String salt = BCrypt.gensalt();
-            Encryptor encryptor = new Encryptor();
-            try {
-                encryptor.encryptText(salt);
-                byte[] encryptedSalt = encryptor.getEncryption();
-                user.setSalt(encryptedSalt);
-            } catch (UnrecoverableEntryException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (KeyStoreException e) {
-                e.printStackTrace();
-            } catch (NoSuchProviderException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (SignatureException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            }
             String hashedPassword = BCrypt.hashpw(textInputEditPassword.getText().toString().trim(), salt);
             user.setHash(hashedPassword);
             databaseHelper.addUser(user);
-
             Snackbar.make(nestedScrollView, getString(R.string.succes_message), Snackbar.LENGTH_LONG).show();
             emptyInputEditText();
+            return true;
         }
         else{
             Snackbar.make(nestedScrollView, getString(R.string.error_email_exists), Snackbar.LENGTH_LONG).show();
         }
+        return false;
     }
     private void emptyInputEditText(){
         textInputEditName.setText(null);

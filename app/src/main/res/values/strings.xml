@@ -26,6 +26,10 @@
     <string name="generate">Generate </string>
     <string name="special">Special</string>
     <string name="error_valid_username_password">Wrong username or password</string>
+    <string name="nrOFnr">nr:</string>
+
+
+
     <item name="visible" type="id" />
     <item name="masked" type="id" />
     <string-array name="countries">

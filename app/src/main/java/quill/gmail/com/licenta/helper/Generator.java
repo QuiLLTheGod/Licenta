@@ -3,6 +3,9 @@ package quill.gmail.com.licenta.helper;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import quill.gmail.com.licenta.R;
@@ -39,13 +42,22 @@ public class Generator {
         randomizer = new Random();
     }
 
+    private String createNumbers(){
+        if(numbers == 0)
+            return "";
+        StringBuilder stringBuilder = new StringBuilder(numbers);
+        char[] temp = NR.toCharArray();
+        for(int i=0;i<numbers;i++){
+            stringBuilder.append(temp[randomizer.nextInt(temp.length)]);
+        }
+        return stringBuilder.toString();
+    }
+
     private boolean createChoices(){
         if(highChar)
             options +=HIGH;
         if(lowChar)
             options +=LOW;
-        if(numbers > 0)
-            options +=NR;
         if(specialChar)
             options +=SPECIAL;
         if(!options.isEmpty()) {
@@ -57,17 +69,41 @@ public class Generator {
         return false;
     }
 
-    public void generatePassword(){
-        StringBuilder stringBuilder = new StringBuilder(length);
-        if(createChoices()) {
-            for (int i = 0; i < length; i++) {
-                stringBuilder.append(choices[randomizer.nextInt(choices.length)]);
+    private String generatePassword(){
+        if(length-numbers>0) {
+            StringBuilder stringBuilder = new StringBuilder(length - numbers);
+            if (createChoices()) {
+                for (int i = 0; i < (length - numbers); i++) {
+                    stringBuilder.append(choices[randomizer.nextInt(choices.length)]);
+                }
             }
-            password = stringBuilder.toString();
+            return stringBuilder.toString();
         }
+        return "";
+    }
+
+    private String shuffleString(String word) {
+        List<Character> characters = new ArrayList<Character>();
+        for(char c : word.toCharArray()) {
+            characters.add(c);
+        }
+        Collections.shuffle(characters);
+        StringBuilder sb = new StringBuilder();
+        for(char c : characters) {
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    private String genPass(){
+        String shuffledPass = generatePassword() + createNumbers();
+        if(shuffledPass.isEmpty())
+            return "Please input";
+        return shuffleString(shuffledPass);
     }
 
     public String getPassword() {
+        password = genPass();
         return password;
     }
 }

@@ -33,7 +33,7 @@ import quill.gmail.com.licenta.model.Item;
 import quill.gmail.com.licenta.model.User;
 import quill.gmail.com.licenta.sql.DatabaseHelper;
 
-public class NewPasswordActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class NewPasswordActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener {
 
     private Button buttonConfirm;
     private Button buttonCancel;
@@ -48,6 +48,7 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
     private Switch numbersSwitch;
     private Switch specialSwitch;
     private TextView textViewGenPass;
+    private TextView numbersTextView;
     private String password;
 
     private int seekBarLength;
@@ -59,11 +60,11 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
 
     private void initViews(){
 
-        buttonConfirm = (Button) findViewById(R.id.buttonConfirm);
-        buttonCancel = (Button) findViewById(R.id.buttonCancel);
+        buttonConfirm = findViewById(R.id.buttonConfirm);
+        buttonCancel = findViewById(R.id.buttonCancel);
         buttonGenerate = findViewById(R.id.buttonGenerate);
 
-        editTextInsertPass = (EditText) findViewById(R.id.editTextInsertPass);
+        editTextInsertPass = findViewById(R.id.editTextInsertPass);
 
         textViewGenPass = findViewById(R.id.textViewGenerated);
 
@@ -73,10 +74,12 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
         specialSwitch = findViewById(R.id.specialSwitch);
 
         numberSeekbar = findViewById(R.id.numbersSeekbar);
+        numberSeekbar.setEnabled(false);
+
         lengthSeekbar = findViewById(R.id.lengthSeekbar);
+        numbersTextView = findViewById(R.id.numbersView);
 
         lengthTextView = findViewById(R.id.lengthTextView);
-
     }
 
     private void initListeners(){
@@ -89,23 +92,8 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
         specialSwitch.setOnCheckedChangeListener(this);
         numbersSwitch.setOnCheckedChangeListener(this);
 
-        lengthSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                seekBarLength = i;
-                lengthTextView.setText(getResources().getString(R.string.password_length)+String.valueOf(i));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        numberSeekbar.setOnSeekBarChangeListener(this);
+        lengthSeekbar.setOnSeekBarChangeListener(this);
     }
 
     private void initObjects(){
@@ -144,12 +132,8 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
 
     private void createGenerator() {
         generator = new Generator(highcharSwitch.isChecked(), lowcharSwitch.isChecked(),
-                specialSwitch.isChecked(), 0, seekBarLength);
-        generator.generatePassword();
+                specialSwitch.isChecked(), numberSeekbar.getProgress() , seekBarLength);
         password = generator.getPassword();
-        String salt;
-        String encryptedSalt = null;
-        salt = BCrypt.gensalt();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
 
             try {
@@ -180,14 +164,12 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
                 e.printStackTrace();
             }
         }
-
-        String hashed_password = BCrypt.hashpw(password, salt);
         textViewGenPass.setText(password);
     }
 
     private void postDataToSQL() {
         databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
-        item.setData("baie");
+        item.setData(password);
         item.setPassword("apa");
         item.setSalt(saltData);
 
@@ -196,6 +178,37 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        switch (compoundButton.getId()){
+            case R.id.numbersSwitch:
+                if(b)
+                    numberSeekbar.setEnabled(true);
+                else
+                    numberSeekbar.setEnabled(false);
+                break;
+        }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        switch (seekBar.getId()) {
+            case R.id.numbersSeekbar:
+                numbersTextView.setText(getResources().getString(R.string.nrOFnr)+String.valueOf(i));
+                break;
+            case R.id.lengthSeekbar:
+                seekBarLength = i;
+                lengthTextView.setText(getResources().getString(R.string.password_length) + String.valueOf(i));
+                break;
+
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
 }

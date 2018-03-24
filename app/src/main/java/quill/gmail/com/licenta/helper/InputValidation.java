@@ -62,8 +62,8 @@ public class InputValidation {
         return true;
     }
 
-    public boolean isPasswordCorrect(TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message){
-        String value = textInputEditText.getText().toString().trim();
+    public boolean isPasswordCorrect(String message, String hash){
+
         return true;
     }
 

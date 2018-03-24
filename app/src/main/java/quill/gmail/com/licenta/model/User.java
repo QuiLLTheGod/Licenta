@@ -6,12 +6,12 @@ package quill.gmail.com.licenta.model;
 
 public class User {
 
-    private int id;
-    public static String NAME;
-    private String email;
-    private String name;
-    private String password;
-    private String hash;
+    private int id = 0;
+    public static String NAME = null;
+    private String email = null;
+    private String name = null;
+    private String password = null;
+    private String hash = null;
     private byte[] salt;
     public int getId(){
         return id;

@@ -24,6 +24,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import quill.gmail.com.licenta.helper.BCrypt;
 import quill.gmail.com.licenta.helper.Decryptor;
+import quill.gmail.com.licenta.helper.InputValidation;
 import quill.gmail.com.licenta.model.Item;
 import quill.gmail.com.licenta.model.User;
 
@@ -33,7 +34,7 @@ import quill.gmail.com.licenta.model.User;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
-    private static final String TABLE_USER = "user";
+    private static final String TABLE_USER = "users";
     private static final String COLUMN_USER_ID = "user_id";
     private static final String COLUMN_USER_NAME = "user_name";
     private static final String COLUMN_USER_EMAIL = "user_email";
@@ -53,9 +54,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_USER_NAME + " TEXT,"
-            + COLUMN_USER_HASH + " TEXT,"
-            + COLUMN_USER_SALT + " data BLOB,"
-            + COLUMN_USER_PASSWORD + " TEXT" + ")";
+            + COLUMN_USER_HASH + " TEXT"
+            + ")";
 
     public String CREATE_PASSWORD_TABLE = "CREATE TABLE "
             + TABLE_PASSWORDS + "("
@@ -68,7 +68,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String DROP_PASSWORD_TABLE = "DROP TABLE IF EXISTS " + TABLE_PASSWORDS;
     public DatabaseHelper(Context context, String database_name){
         super(context, database_name, null, DATABASE_VERSION);
-
     }
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
@@ -85,11 +84,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void addUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_NAME, user.NAME);
-        values.put(COLUMN_USER_EMAIL, user.getEmail());
-        values.put(COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(COLUMN_USER_NAME, user.getName());
         values.put(COLUMN_USER_HASH, user.getHash());
-        values.put(COLUMN_USER_SALT, user.getSalt());
         db.insert(TABLE_USER, null, values);
     }
 
@@ -111,50 +107,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean checkUser(String user, String password){
-        String[] columns = {
+        String[] columns = new String[] {
+                COLUMN_USER_NAME,
                 COLUMN_USER_ID,
-                COLUMN_USER_SALT,
-                COLUMN_USER_HASH,
-                COLUMN_USER_NAME
+                COLUMN_USER_HASH
         };
         SQLiteDatabase db = this.getWritableDatabase();
-        String selection = COLUMN_USER_NAME + "=?";
-        String[] selectionArgs = {user};
+        String selection = "user_name=?";
+        String[] selectionArgs = new String[] {user};
 
         Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null,
         null, null);
         int cursorCount = cursor.getCount();
-
+        cursor.moveToFirst();
         if(cursorCount > 0){
-            try {
-                Decryptor decryptor = new Decryptor();
-                String decryptedSalt = decryptor.decryptData(cursor.getBlob(cursor.getColumnIndex(COLUMN_USER_SALT)));
-                BCrypt bCrypt = new BCrypt();
-                if(bCrypt.checkpw(password, cursor.getString(cursor.getColumnIndex(COLUMN_USER_HASH)))){
-                    return true;
-                }
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (KeyStoreException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (CertificateException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (UnrecoverableEntryException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchProviderException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
+            BCrypt bCrypt = new BCrypt();
+            if(bCrypt.checkpw(password, cursor.getString(cursor.getColumnIndex(COLUMN_USER_HASH)))){
+                cursor.close();
+                db.close();
+                return true;
             }
         }
         cursor.close();
