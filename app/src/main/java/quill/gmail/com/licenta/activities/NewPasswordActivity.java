@@ -1,5 +1,6 @@
 package quill.gmail.com.licenta.activities;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -50,17 +51,22 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
     private TextView textViewGenPass;
     private TextView numbersTextView;
     private String password;
+    private View view;
 
     private int seekBarLength;
     private byte[] saltData;
 
     private TextView lengthTextView;
 
+
     private Generator generator;
 
     private void initViews(){
 
+        view = findViewById(R.id.activity_new_password);
+
         buttonConfirm = findViewById(R.id.buttonConfirm);
+        buttonConfirm.setEnabled(false);
         buttonCancel = findViewById(R.id.buttonCancel);
         buttonGenerate = findViewById(R.id.buttonGenerate);
 
@@ -131,11 +137,25 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void createGenerator() {
+        if(!highcharSwitch.isChecked() && !lowcharSwitch.isChecked() && !specialSwitch.isChecked() && (numberSeekbar.getProgress() == 0)) {
+            Snackbar.make(view, getString(R.string.please_select), Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if(seekBarLength == 0) {
+            Snackbar.make(view, getString(R.string.no_input), Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if(seekBarLength < numberSeekbar.getProgress()) {
+            Snackbar.make(view, getString(R.string.too_many_numbers), Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        else {
         generator = new Generator(highcharSwitch.isChecked(), lowcharSwitch.isChecked(),
                 specialSwitch.isChecked(), numberSeekbar.getProgress() , seekBarLength);
         password = generator.getPassword();
-
         textViewGenPass.setText(password);
+        buttonConfirm.setEnabled(true);
+        }
     }
 
     private void postDataToSQL() {
@@ -182,8 +202,11 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
             case R.id.numbersSwitch:
                 if(b)
                     numberSeekbar.setEnabled(true);
-                else
+                else {
                     numberSeekbar.setEnabled(false);
+                    numberSeekbar.setProgress(0);
+                    numbersTextView.setText(getString(R.string.nrOFnr));
+                }
                 break;
         }
     }

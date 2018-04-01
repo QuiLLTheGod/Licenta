@@ -14,6 +14,9 @@
     <string name="text_not_member">No account yet? Create one</string>
     <string name="text_already_member">Already a member? Login</string>
     <string name="error_email_exists">Email already exists</string>
+    <string name="too_many_numbers">Please input more length</string>
+    <string name="no_input">No input</string>
+    <string name="please_select">Please select characters</string>
     <string name="error_password_match">Password does not match</string>
     <string name="password_length">Password length: </string>
     <string name="password_options">Password options:</string>

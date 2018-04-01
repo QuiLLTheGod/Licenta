@@ -98,7 +98,7 @@ public class Generator {
     private String genPass(){
         String shuffledPass = generatePassword() + createNumbers();
         if(shuffledPass.isEmpty())
-            return "Please input";
+            return "Please input some choices";
         return shuffleString(shuffledPass);
     }
 
