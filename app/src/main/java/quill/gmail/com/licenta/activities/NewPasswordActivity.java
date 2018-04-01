@@ -134,6 +134,13 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
         generator = new Generator(highcharSwitch.isChecked(), lowcharSwitch.isChecked(),
                 specialSwitch.isChecked(), numberSeekbar.getProgress() , seekBarLength);
         password = generator.getPassword();
+
+        textViewGenPass.setText(password);
+    }
+
+    private void postDataToSQL() {
+        databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
+        item.setData(password);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
 
             try {
@@ -164,13 +171,6 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
                 e.printStackTrace();
             }
         }
-        textViewGenPass.setText(password);
-    }
-
-    private void postDataToSQL() {
-        databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
-        item.setData(password);
-        item.setPassword("apa");
         item.setSalt(saltData);
 
         databaseHelper.addPassword(item);

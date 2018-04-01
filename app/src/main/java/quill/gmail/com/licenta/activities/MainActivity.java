@@ -1,6 +1,8 @@
 package quill.gmail.com.licenta.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import quill.gmail.com.licenta.R;
 import quill.gmail.com.licenta.helper.InputValidation;
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
+
+    private ProgressBar progressBar;
 
 
     @Override
@@ -64,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         appCompatButtonLogin = (AppCompatButton) findViewById(R.id.appCompatButtonLogin);
 
         textViewLinkRegister = (AppCompatTextView) findViewById(R.id.textViewLinkRegister);
+
+        progressBar = findViewById(R.id.progressbar);
     }
     private void initListeners(){
         appCompatButtonLogin.setOnClickListener(this);
@@ -77,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v){
         switch (v.getId()){
             case R.id.appCompatButtonLogin:
-                verifyFromSQLite();
+                new Task().execute();
                 break;
             case R.id.textViewLinkRegister:
                 Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
@@ -102,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             User.NAME = textInputEditTextUser.getText().toString().trim();
             Intent accountsIntent = new Intent(activity, UsersActivity.class);
             accountsIntent.putExtra("EMAIL", textInputEditTextUser.getText().toString().trim());
-            emptyInputEditText();
             startActivity(accountsIntent);
         }
         else{
@@ -113,5 +119,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void emptyInputEditText(){
         textInputEditTextUser.setText(null);
         textInputEditTextPassword.setText(null);
+    }
+    public class Task  extends AsyncTask<String, Integer, Boolean>{
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            verifyFromSQLite();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            progressBar.setVisibility(View.INVISIBLE);
+            emptyInputEditText();
+            super.onPostExecute(aBoolean);
+        }
     }
 }
