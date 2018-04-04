@@ -23,7 +23,8 @@
     <string name="high_char">A-Z</string>
     <string name="low_char">a-z</string>
     <string name="more_options">Extra</string>
-    <string name="numbers">0-9</string>
+    <string name="numbers">0–9</string>
+    <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="generate">Generate </string>
@@ -32,14 +33,14 @@
     <string name="nrOFnr">nr:</string>
 
 
-
     <item name="visible" type="id" />
     <item name="masked" type="id" />
-    <string-array name="countries">
-        <item>Australia</item>
-        <item>Australia</item>
-        <item>Australia</item>
-        <item>Australia</item>
+
+
+
+    <string-array name="choices_array">
+        <item>generate a new password(Safe)</item>
+        <item>use my own password(Unsafe)</item>
 
     </string-array>
 

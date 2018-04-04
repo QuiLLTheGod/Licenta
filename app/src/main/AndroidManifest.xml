@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="quill.gmail.com.licenta">
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -8,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="quill.gmail.com.licenta.activities.MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -16,13 +17,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="quill.gmail.com.licenta.activities.RegisterActivity"
+            android:name=".activities.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="quill.gmail.com.licenta.activities.UsersActivity"
+            android:name=".activities.UsersActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="quill.gmail.com.licenta.activities.ItemDetailsActivity" />
-        <activity android:name="quill.gmail.com.licenta.activities.NewPasswordActivity"></activity>
+        <activity android:name=".activities.ItemDetailsActivity" />
+        <activity android:name=".activities.NewPasswordActivity" />
+        <activity android:name=".activities.NewItemActivity"></activity>
     </application>
 
 </manifest>

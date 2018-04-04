@@ -33,7 +33,7 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
 
     protected void onCreate(Bundle savedInstanceStates){
         super.onCreate(savedInstanceStates);
-        setContentView(R.layout.activty_users);
+        setContentView(R.layout.activity_users);
 
         buttonNewPassword = (Button) findViewById(R.id.buttonNewPassword);
         listView =(ListView) findViewById(R.id.User_ListView);
@@ -87,9 +87,9 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Intent intent = new Intent(UsersActivity.this, ItemDetailsActivity.class);
-        intent.putExtra("ID", arrayListOfItems.get(i).getId());
-        intent.putExtra("Nume", arrayListOfItems.get(i).getDecryptedPassword());
+        Intent intent = new Intent(UsersActivity.this, NewItemActivity.class);
+    //    intent.putExtra("ID", arrayListOfItems.get(i).getId());
+     //   intent.putExtra("Nume", arrayListOfItems.get(i).getDecryptedPassword());
         startActivityForResult(intent, 1);
     }
 }
