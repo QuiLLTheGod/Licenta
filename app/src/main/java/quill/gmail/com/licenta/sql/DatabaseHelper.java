@@ -46,8 +46,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_PASSWORDS = "passwords";
     private static final String COLUMN_PASSWORD_ID = "password_id";
     private static final String COLUMN_PASSWORD = "password";
-    private static final String COLUMN_PASSWORD_REF = "password_ref";
+    private static final String COLUMN_PASSWORD_DESCRIPTION = "password_description";
     private static final String COLUMN_PASSWORD_SALT = "password_salt";
+    private static final String COLUMN_PASSWORD_USEDFOR = "password_usedfor";
+    private static final String COLUMN_PASSWORD_USERNAME = "password_username";
     private SQLiteDatabase database;
 
     private String CREATE_USER_TABLE = "CREATE TABLE "
@@ -62,7 +64,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_PASSWORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_PASSWORD + " TEXT,"
             + COLUMN_PASSWORD_SALT + " data BLOB,"
-            + COLUMN_PASSWORD_REF + " TEXT" +")";
+            + COLUMN_PASSWORD_USEDFOR + " TEXT,"
+            + COLUMN_PASSWORD_USERNAME + " TEXT,"
+            + COLUMN_PASSWORD_DESCRIPTION + " TEXT" +")";
 
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
     private String DROP_PASSWORD_TABLE = "DROP TABLE IF EXISTS " + TABLE_PASSWORDS;
@@ -93,8 +97,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_PASSWORD, item.getPassword());
-        values.put(COLUMN_PASSWORD_REF, item.getData());
+        values.put(COLUMN_PASSWORD_DESCRIPTION, item.getDescription());
         values.put(COLUMN_PASSWORD_SALT, item.getSalt());
+        values.put(COLUMN_PASSWORD_USEDFOR, item.getUsedFor());
+        values.put(COLUMN_PASSWORD_USERNAME, item.getUsername());
         db.insert(TABLE_PASSWORDS,null,  values);
     }
 
@@ -167,7 +173,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Item> getItems(){
         SQLiteDatabase db = this.getWritableDatabase();
-        String[] columns  = new String[] {  COLUMN_PASSWORD_ID, COLUMN_PASSWORD_SALT, COLUMN_PASSWORD};
+        String[] columns  = new String[] {  COLUMN_PASSWORD_ID, COLUMN_PASSWORD_SALT, COLUMN_PASSWORD,
+                COLUMN_PASSWORD_USEDFOR, COLUMN_PASSWORD_DESCRIPTION, COLUMN_PASSWORD_USERNAME};
         ArrayList<Item> list = new ArrayList<>();
 
         Cursor c = db.query(TABLE_PASSWORDS, columns,
@@ -176,7 +183,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             list.add(new Item(
                     c.getString(c.getColumnIndex(COLUMN_PASSWORD)),
                     c.getInt(c.getColumnIndex(COLUMN_PASSWORD_ID)),
-                    c.getBlob(c.getColumnIndex(COLUMN_PASSWORD_SALT))));
+                    c.getBlob(c.getColumnIndex(COLUMN_PASSWORD_SALT)),
+                    c.getString(c.getColumnIndex(COLUMN_PASSWORD_USEDFOR)),
+                    c.getString(c.getColumnIndex(COLUMN_PASSWORD_DESCRIPTION)),
+                    c.getString(c.getColumnIndex(COLUMN_PASSWORD_USERNAME))));
         }
         return list;
     }

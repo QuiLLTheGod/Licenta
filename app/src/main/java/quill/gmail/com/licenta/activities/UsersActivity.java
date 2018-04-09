@@ -35,15 +35,14 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceStates);
         setContentView(R.layout.activity_users);
 
-        buttonNewPassword = (Button) findViewById(R.id.buttonNewPassword);
-        listView =(ListView) findViewById(R.id.User_ListView);
+        buttonNewPassword = findViewById(R.id.buttonNewPassword);
+        listView = findViewById(R.id.User_ListView);
         databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
         passwordIDs = databaseHelper.getPasswordIDs();
         arrayListOfItems = databaseHelper.getItems();
         ArrayList<String> strings = new ArrayList<>();
         for (Item i: arrayListOfItems) {
-            strings.add(i.getDecryptedPassword());
-
+            strings.add(i.getUsername());
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(UsersActivity.this,
                 android.R.layout.simple_list_item_1, strings);
@@ -59,7 +58,7 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.buttonNewPassword:
-                Intent intent = new Intent(getApplicationContext(), NewPasswordActivity.class);
+                Intent intent = new Intent(getApplicationContext(), NewItemActivity.class);
                 startActivityForResult(intent,1);
                 break;
                 /*

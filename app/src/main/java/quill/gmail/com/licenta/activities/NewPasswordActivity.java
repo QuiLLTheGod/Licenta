@@ -1,5 +1,6 @@
 package quill.gmail.com.licenta.activities;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -125,8 +126,9 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.buttonConfirm:
-                postDataToSQL();
-                setResult(RESULT_OK,null);
+                Intent returnedIntent = new Intent();
+                returnedIntent.putExtra("generatedPassword", password);
+                setResult(RESULT_OK,returnedIntent);
                 finish();
                 break;
 
@@ -156,44 +158,6 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
         textViewGenPass.setText(password);
         buttonConfirm.setEnabled(true);
         }
-    }
-
-    private void postDataToSQL() {
-        databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
-        item.setData(password);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-
-            try {
-                Encryptor encryptor = new Encryptor();
-                encryptor.encryptText(password);
-                saltData= encryptor.getEncryption();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (KeyStoreException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SignatureException e) {
-                e.printStackTrace();
-            } catch (UnrecoverableEntryException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchProviderException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            }
-        }
-        item.setSalt(saltData);
-
-        databaseHelper.addPassword(item);
     }
 
     @Override
