@@ -6,6 +6,42 @@
     android:layout_height="match_parent"
     tools:context="quill.gmail.com.licenta.activities.ItemDetailsActivity">
 
+    <TextView
+        android:id="@+id/textViewIDADetails"
+        android:layout_width="100dp"
+        android:layout_height="19dp"
+        android:layout_marginBottom="60dp"
+        android:layout_marginStart="16dp"
+        android:text="Details"
+        android:textAlignment="viewStart"
+        app:layout_constraintBottom_toTopOf="@+id/editTextIDADetails"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewIDAUsername"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Username:"
+        android:textAlignment="viewStart"
+        app:layout_constraintBottom_toTopOf="@+id/editTextIDAUsername"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextIDAUsername"
+        android:layout_width="368dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/textViewIDAPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/buttonItemDetailsDelete"
         android:layout_width="wrap_content"
@@ -15,4 +51,73 @@
         android:text="Delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewIDAPassword"
+        android:layout_width="100dp"
+        android:layout_height="17dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Password:"
+        app:layout_constraintBottom_toTopOf="@+id/editTextIDAPassword"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextIDAPassword"
+        android:layout_width="368dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/buttonIDAShowPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonIDAShowPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Show"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonItemDetailsDelete" />
+
+    <EditText
+        android:id="@+id/editTextIDADetails"
+        android:layout_width="368dp"
+        android:layout_height="47dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/textViewIDAUsername"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewIDAUsedFor"
+        android:layout_width="115dp"
+        android:layout_height="79dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonIDAEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="EDIT"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonIDAShowPassword" />
 </android.support.constraint.ConstraintLayout>

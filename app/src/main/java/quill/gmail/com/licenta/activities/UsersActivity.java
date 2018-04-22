@@ -86,9 +86,9 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Intent intent = new Intent(UsersActivity.this, NewItemActivity.class);
-    //    intent.putExtra("ID", arrayListOfItems.get(i).getId());
-     //   intent.putExtra("Nume", arrayListOfItems.get(i).getDecryptedPassword());
+        Intent intent = new Intent(UsersActivity.this, ItemDetailsActivity.class);
+        intent.putExtra("ID", arrayListOfItems.get(i).getId());
+        intent.putExtra("Password", arrayListOfItems.get(i).getDecryptedPassword());
         startActivityForResult(intent, 1);
     }
 }

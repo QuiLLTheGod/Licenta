@@ -74,7 +74,7 @@
         android:id="@+id/editTextDescription"
         android:layout_width="368dp"
         android:layout_height="110dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:background="@android:color/transparent"
         android:ems="10"
@@ -83,7 +83,7 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/buttonSave"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -159,6 +159,7 @@
         android:gravity="top|left"
         android:hint="Password used for"
         android:inputType="textPersonName"
+        android:textAlignment="viewStart"
         app:layout_constraintBottom_toTopOf="@+id/textViewDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
