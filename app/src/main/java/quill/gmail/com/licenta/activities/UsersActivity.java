@@ -89,6 +89,9 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent(UsersActivity.this, ItemDetailsActivity.class);
         intent.putExtra("ID", arrayListOfItems.get(i).getId());
         intent.putExtra("Password", arrayListOfItems.get(i).getDecryptedPassword());
+        intent.putExtra("Username", arrayListOfItems.get(i).getUsername());
+        intent.putExtra("Details", arrayListOfItems.get(i).getDescription());
+        intent.putExtra("UsedFor", arrayListOfItems.get(i).getUsedFor());
         startActivityForResult(intent, 1);
     }
 }
