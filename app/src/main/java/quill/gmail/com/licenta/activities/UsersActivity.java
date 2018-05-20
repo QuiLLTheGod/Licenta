@@ -38,7 +38,7 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
         buttonNewPassword = findViewById(R.id.buttonNewPassword);
         listView = findViewById(R.id.User_ListView);
         databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
-        passwordIDs = databaseHelper.getPasswordIDs();
+        //passwordIDs = databaseHelper.getPasswordIDs();
         arrayListOfItems = databaseHelper.getItems();
         ArrayList<String> strings = new ArrayList<>();
         for (Item i: arrayListOfItems) {
@@ -77,11 +77,13 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
             startActivity(refresh);
             this.finish();
         }
+        else{
+            Intent refresh = new Intent(this, UsersActivity.class);
+            startActivity(refresh);
+            this.finish();
+        }
     }
 
-    private void checkDetails(){
-
-    }
 
 
     @Override

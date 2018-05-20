@@ -37,7 +37,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import quill.gmail.com.licenta.R;
-import quill.gmail.com.licenta.fragments.FingerprintAuthenticationDialogFragment;
+import quill.gmail.com.licenta.fragments.FingerprintDialogFragment;
+import quill.gmail.com.licenta.fragments.FingerprintDialogFragment;
 import quill.gmail.com.licenta.model.User;
 import quill.gmail.com.licenta.sql.DatabaseHelper;
 import android.view.Menu;
@@ -237,18 +238,18 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
                 // Show the fingerprint dialog. The user has the option to use the fingerprint with
                 // crypto, or you can fall back to using a server-side verified password.
-                FingerprintAuthenticationDialogFragment fragment
-                        = new FingerprintAuthenticationDialogFragment();
+                FingerprintDialogFragment fragment
+                        = new FingerprintDialogFragment();
                 fragment.setCryptoObject(new FingerprintManager.CryptoObject(mCipher));
                 boolean useFingerprintPreference = mSharedPreferences
                         .getBoolean(getString(R.string.use_fingerprint_to_authenticate_key),
                                 true);
                 if (useFingerprintPreference) {
                     fragment.setStage(
-                            FingerprintAuthenticationDialogFragment.Stage.FINGERPRINT);
+                            FingerprintDialogFragment.Stage.FINGERPRINT);
                 } else {
                     fragment.setStage(
-                            FingerprintAuthenticationDialogFragment.Stage.NEW_FINGERPRINT_ENROLLED);
+                            FingerprintDialogFragment.Stage.NEW_FINGERPRINT_ENROLLED);
                 }
                 fragment.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
             } else {
@@ -256,11 +257,11 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                 // enrolled. Thus show the dialog to authenticate with their password first
                 // and ask the user if they want to authenticate with fingerprints in the
                 // future
-                FingerprintAuthenticationDialogFragment fragment
-                        = new FingerprintAuthenticationDialogFragment();
+                FingerprintDialogFragment fragment
+                        = new FingerprintDialogFragment();
                 fragment.setCryptoObject(new FingerprintManager.CryptoObject(mCipher));
                 fragment.setStage(
-                        FingerprintAuthenticationDialogFragment.Stage.NEW_FINGERPRINT_ENROLLED);
+                        FingerprintDialogFragment.Stage.NEW_FINGERPRINT_ENROLLED);
                 fragment.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
             }
         }
@@ -352,7 +353,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -361,11 +362,23 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, quill.gmail.com.licenta.activities.SettingsActivity.class);
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        switch (id){
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_export:
+                Intent intent2 = new Intent(this, ExportGoogleDriveActivity.class);
+                startActivity(intent2);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
 
