@@ -108,6 +108,15 @@ public class Item {
         return decryptedPassword;
     }
 
+    public String[] getAll(){
+        return new String[]{
+                this.username,
+                this.getDecryptedPassword(),
+                this.usedFor,
+                this.description
+        };
+    }
+
     public String getUsedFor() {
         return usedFor;
     }

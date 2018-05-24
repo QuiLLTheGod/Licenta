@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.media.browse.MediaBrowser;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,13 +26,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.CreateFileActivityOptions;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveClient;
 import com.google.android.gms.drive.DriveContents;
-import com.google.android.gms.drive.DriveFile;
-import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.DriveId;
-import com.google.android.gms.drive.DriveResource;
+
 import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.tasks.Continuation;
@@ -41,10 +39,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
+import quill.gmail.com.licenta.helper.CSVwriter;
+import quill.gmail.com.licenta.model.Item;
 import quill.gmail.com.licenta.model.User;
 import quill.gmail.com.licenta.sql.DatabaseHelper;
 
@@ -57,6 +59,9 @@ import static android.content.ContentValues.TAG;
 public class ExportGoogleDriveActivity extends Activity {
     private Activity mActivity;
     private GoogleApiClient mGoogleApiClient;
+    private File file;
+
+    private static final String MIME_CSV="text/csv";
     private static final String DB_LOCATION = "/data/data/quill.gmail.com.licenta/databases/" + User.NAME + ".db";
     private static final String MIME = "application/x-sqlite3";
     private static final int REQUEST_CODE_RESOLUTION = 1;
@@ -67,16 +72,16 @@ public class ExportGoogleDriveActivity extends Activity {
     private static final int REQUEST_CODE_CAPTURE_IMAGE = 1;
     private static final int REQUEST_CODE_CREATOR = 2;
 
+    private DatabaseHelper databaseHelper;
     private GoogleSignInClient mGoogleSignInClient;
     private DriveClient mDriveClient;
     private DriveResourceClient mDriveResourceClient;
-    private DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
 
-    private Bitmap mBitmapToSave;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
         signIn();
     }
 
@@ -132,7 +137,8 @@ public class ExportGoogleDriveActivity extends Activity {
                         new Continuation<DriveContents, Task<Void>>() {
                             @Override
                             public Task<Void> then(@NonNull Task<DriveContents> task) throws Exception {
-                                return createFileIntentSender(task.getResult(), User.NAME, MIME, new java.io.File(DB_LOCATION));
+                               // return createFileIntentSender(task.getResult(), User.NAME, MIME, new java.io.File(DB_LOCATION));
+                                return  createFileIntentSender(task.getResult(), User.NAME, MIME_CSV,sqlToCVS());
                             }
                         })
                 .addOnFailureListener(
@@ -144,9 +150,22 @@ public class ExportGoogleDriveActivity extends Activity {
                         });
     }
 
-    private void sqlToCVS(){
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
-    //    CSVWriter csvWriter = new CSVwriter();
+    private File sqlToCVS(){
+        File exportDir = new File(getCacheDir(), "");
+        File file = new File(exportDir, "csvname.csv");
+        ArrayList<Item> items = databaseHelper.getItems();
+        try
+        {
+            file.createNewFile();
+            CSVwriter csvWrite = new CSVwriter(new FileWriter(file));
+            for(Item item:items){
+                csvWrite.writeNext(item.getAll());
+            }
+            csvWrite.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } ;
+        return file;
     }
 
 

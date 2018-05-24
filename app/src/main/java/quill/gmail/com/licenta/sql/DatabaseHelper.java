@@ -23,6 +23,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import quill.gmail.com.licenta.helper.BCrypt;
+import quill.gmail.com.licenta.helper.CSVwriter;
 import quill.gmail.com.licenta.helper.Decryptor;
 import quill.gmail.com.licenta.helper.InputValidation;
 import quill.gmail.com.licenta.model.Item;
@@ -189,6 +190,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getString(c.getColumnIndex(COLUMN_PASSWORD_USERNAME))));
         }
         return list;
+    }
+
+    public void writeToCSV(CSVwriter writer){
+
     }
 
     public SQLiteDatabase getDatabase() {
