@@ -57,19 +57,15 @@ import static android.content.ContentValues.TAG;
  */
 
 public class ExportGoogleDriveActivity extends Activity {
-    private Activity mActivity;
-    private GoogleApiClient mGoogleApiClient;
-    private File file;
 
     private static final String MIME_CSV="text/csv";
     private static final String DB_LOCATION = "/data/data/quill.gmail.com.licenta/databases/" + User.NAME + ".db";
     private static final String MIME = "application/x-sqlite3";
-    private static final int REQUEST_CODE_RESOLUTION = 1;
-    private static final  int REQUEST_CODE_OPENER = 2;
+
 
     private static final String TAG = "drive-quickstart";
     private static final int REQUEST_CODE_SIGN_IN = 0;
-    private static final int REQUEST_CODE_CAPTURE_IMAGE = 1;
+
     private static final int REQUEST_CODE_CREATOR = 2;
 
     private DatabaseHelper databaseHelper;
@@ -134,20 +130,12 @@ public class ExportGoogleDriveActivity extends Activity {
         mDriveResourceClient
                 .createContents()
                 .continueWithTask(
-                        new Continuation<DriveContents, Task<Void>>() {
-                            @Override
-                            public Task<Void> then(@NonNull Task<DriveContents> task) throws Exception {
-                               // return createFileIntentSender(task.getResult(), User.NAME, MIME, new java.io.File(DB_LOCATION));
-                                return  createFileIntentSender(task.getResult(), User.NAME, MIME_CSV,sqlToCVS());
-                            }
+                        task -> {
+                           // return createFileIntentSender(task.getResult(), User.NAME, MIME, new java.io.File(DB_LOCATION));
+                            return  createFileIntentSender(task.getResult(), User.NAME, MIME_CSV,sqlToCVS());
                         })
                 .addOnFailureListener(
-                        new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Failed to create new contents.", e);
-                            }
-                        });
+                        e -> Log.w(TAG, "Failed to create new contents.", e));
     }
 
     private File sqlToCVS(){
@@ -164,7 +152,7 @@ public class ExportGoogleDriveActivity extends Activity {
             csvWrite.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } ;
+        }
         return file;
     }
 
@@ -211,12 +199,9 @@ public class ExportGoogleDriveActivity extends Activity {
         return mDriveClient
                 .newCreateFileActivityIntentSender(createFileActivityOptions)
                 .continueWith(
-                        new Continuation<IntentSender, Void>() {
-                            @Override
-                            public Void then(@NonNull Task<IntentSender> task) throws Exception {
-                                startIntentSenderForResult(task.getResult(), REQUEST_CODE_CREATOR, null, 0, 0, 0);
-                                return null;
-                            }
+                        task -> {
+                            startIntentSenderForResult(task.getResult(), REQUEST_CODE_CREATOR, null, 0, 0, 0);
+                            return null;
                         }
                 );
     }

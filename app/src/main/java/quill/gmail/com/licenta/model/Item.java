@@ -6,6 +6,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 
@@ -14,6 +15,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import quill.gmail.com.licenta.helper.Decryptor;
+import quill.gmail.com.licenta.helper.Encryptor;
 
 /**
  * Created by Paul on 3/4/2018.
@@ -41,6 +43,38 @@ public class Item {
         setDescription(description);
         setUsedFor(usedFor);
         setUsername(username);
+    }
+    public Item(String[] strings){
+        Encryptor encryptor = new Encryptor();
+        this.username = strings[0];
+        try {
+            encryptor.encryptText(strings[1]);
+            this.salt = encryptor.getEncryption();
+        } catch (UnrecoverableEntryException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
+        this.usedFor = strings[2];
+        this.description = strings[3];
     }
 
     public int getId(){return id;}

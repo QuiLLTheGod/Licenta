@@ -13,4 +13,9 @@
         android:orderInCategory="110"
         android:title="Export"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_import"
+        android:orderInCategory="110"
+        android:title="Import"
+        app:showAsAction="never" />
 </menu>

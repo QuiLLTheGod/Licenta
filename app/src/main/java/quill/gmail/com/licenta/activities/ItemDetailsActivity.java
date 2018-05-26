@@ -333,19 +333,13 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         builder.setCancelable(true);
         builder.setTitle("");
         builder.setMessage("Are you sure you want to delete this password? This action cannot be undone!");
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                postDataToSQL();
-                setResult(RESULT_OK, null);
-                finish();
-            }
+        builder.setPositiveButton("Confirm", (dialogInterface, i) -> {
+            postDataToSQL();
+            setResult(RESULT_OK, null);
+            finish();
         });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //do nothing
-            }
+        builder.setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> {
+            //do nothing
         });
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -361,12 +355,11 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }
         switch (id){
+            case R.id.action_import:
+                Intent intent3 = new Intent(this, ImportGoogleDriveActivity.class);
+                startActivity(intent3);
+                break;
             case R.id.action_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);

@@ -39,6 +39,8 @@
         <activity android:name=".activities.NewPasswordActivity" />
         <activity android:name=".activities.NewItemActivity" />
         <activity android:name=".activities.ExportGoogleDriveActivity"/>
+        <activity android:name=".activities.ImportGoogleDriveActivity"/>
+
         <activity android:name=".activities.SettingsActivity" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
