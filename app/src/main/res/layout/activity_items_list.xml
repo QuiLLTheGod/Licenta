@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="10dp"
-        android:src="@android:drawable/ic_menu_add"
+        android:src="@drawable/add"
         app:backgroundTint="@color/colorText" />
 
 </FrameLayout>

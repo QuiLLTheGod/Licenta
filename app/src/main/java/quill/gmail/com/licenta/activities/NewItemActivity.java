@@ -1,8 +1,10 @@
 package quill.gmail.com.licenta.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -112,7 +114,28 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
                 Intent intent = new Intent(getApplicationContext(), NewPasswordActivity.class);
                 startActivityForResult(intent,1);
                 break;
+            case R.id.buttonInsertNIA:
+                createAlertDial();
+
+                break;
         }
+    }
+
+    private void createAlertDial() {
+        EditText editText = new EditText(this);
+        editText.setPadding(5,0,5,0);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("");
+        builder.setView(editText);
+        builder.setMessage("Insert your password here:");
+        builder.setPositiveButton("Confirm", (dialog, which) -> {
+            password = editText.getText().toString();
+            refreshGUI();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> password = editText.getText().toString());
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
