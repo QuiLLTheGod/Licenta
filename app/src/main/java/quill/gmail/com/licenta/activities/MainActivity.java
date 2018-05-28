@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(databaseHelper.checkUser(textInputEditTextUser.getText().toString().trim(),
                                     textInputEditTextPassword.getText().toString().trim())){
             User.NAME = textInputEditTextUser.getText().toString().trim();
-            Intent accountsIntent = new Intent(activity, UsersActivity.class);
+            Intent accountsIntent = new Intent(activity, ItemsListActivity.class);
             accountsIntent.putExtra("EMAIL", textInputEditTextUser.getText().toString().trim());
             startActivity(accountsIntent);
         }

@@ -6,16 +6,13 @@
         android:name="android.hardware.fingerprint"
         android:required="false" />
 
-
-    <uses-permission
-        android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission
         android:name="android.permission.INTERNET"
-        android:required="false"/>
+        android:required="false" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -38,16 +35,18 @@
         <activity android:name=".activities.ItemDetailsActivity" />
         <activity android:name=".activities.NewPasswordActivity" />
         <activity android:name=".activities.NewItemActivity" />
-        <activity android:name=".activities.ExportGoogleDriveActivity"/>
-        <activity android:name=".activities.ImportGoogleDriveActivity"/>
-
+        <activity android:name=".activities.ExportGoogleDriveActivity" />
+        <activity android:name=".activities.ImportGoogleDriveActivity" />
         <activity android:name=".activities.SettingsActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDRBk5bKj4gh5URscgoaxDIrY0w79N7gSA"/>
+            android:value="AIzaSyDRBk5bKj4gh5URscgoaxDIrY0w79N7gSA" />
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".activities.ItemsListActivity"></activity>
     </application>
 
 </manifest>

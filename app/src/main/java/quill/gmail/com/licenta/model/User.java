@@ -6,7 +6,7 @@ package quill.gmail.com.licenta.model;
 
 public class User {
 
-    private int id = 0;
+    private int id;
     public static String NAME = null;
     private String email = null;
     private String name = null;

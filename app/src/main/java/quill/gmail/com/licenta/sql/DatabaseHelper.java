@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
@@ -51,6 +52,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PASSWORD_SALT = "password_salt";
     private static final String COLUMN_PASSWORD_USEDFOR = "password_usedfor";
     private static final String COLUMN_PASSWORD_USERNAME = "password_username";
+    private static final String COLUMN_PASSWORD_IMAGE_ID = "password_image_id";
+
     private SQLiteDatabase database;
 
     private String CREATE_USER_TABLE = "CREATE TABLE "
@@ -67,6 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_PASSWORD_SALT + " data BLOB,"
             + COLUMN_PASSWORD_USEDFOR + " TEXT,"
             + COLUMN_PASSWORD_USERNAME + " TEXT,"
+            + COLUMN_PASSWORD_IMAGE_ID + " INTEGER,"
             + COLUMN_PASSWORD_DESCRIPTION + " TEXT" +")";
 
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
@@ -102,6 +106,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PASSWORD_SALT, item.getSalt());
         values.put(COLUMN_PASSWORD_USEDFOR, item.getUsedFor());
         values.put(COLUMN_PASSWORD_USERNAME, item.getUsername());
+        values.put(COLUMN_PASSWORD_SALT, item.getSalt());
+        values.put(COLUMN_PASSWORD_IMAGE_ID, item.getImageID());
         db.insert(TABLE_PASSWORDS,null,  values);
     }
 
@@ -128,8 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int cursorCount = cursor.getCount();
         cursor.moveToFirst();
         if(cursorCount > 0){
-            BCrypt bCrypt = new BCrypt();
-            if(bCrypt.checkpw(password, cursor.getString(cursor.getColumnIndex(COLUMN_USER_HASH)))){
+            if(BCrypt.checkpw(password, cursor.getString(cursor.getColumnIndex(COLUMN_USER_HASH)))){
                 cursor.close();
                 db.close();
                 return true;
@@ -175,7 +180,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Item> getItems(){
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns  = new String[] {  COLUMN_PASSWORD_ID, COLUMN_PASSWORD_SALT, COLUMN_PASSWORD,
-                COLUMN_PASSWORD_USEDFOR, COLUMN_PASSWORD_DESCRIPTION, COLUMN_PASSWORD_USERNAME};
+                COLUMN_PASSWORD_USEDFOR, COLUMN_PASSWORD_DESCRIPTION, COLUMN_PASSWORD_USERNAME, COLUMN_PASSWORD_IMAGE_ID};
         ArrayList<Item> list = new ArrayList<>();
 
         Cursor c = db.query(TABLE_PASSWORDS, columns,
@@ -187,13 +192,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getBlob(c.getColumnIndex(COLUMN_PASSWORD_SALT)),
                     c.getString(c.getColumnIndex(COLUMN_PASSWORD_USEDFOR)),
                     c.getString(c.getColumnIndex(COLUMN_PASSWORD_DESCRIPTION)),
-                    c.getString(c.getColumnIndex(COLUMN_PASSWORD_USERNAME))));
+                    c.getString(c.getColumnIndex(COLUMN_PASSWORD_USERNAME)),
+                    c.getInt(c.getColumnIndex(COLUMN_PASSWORD_IMAGE_ID))));
         }
         return list;
-    }
-
-    public void writeToCSV(CSVwriter writer){
-
     }
 
     public SQLiteDatabase getDatabase() {

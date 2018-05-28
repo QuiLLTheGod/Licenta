@@ -217,7 +217,7 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
         item.setSalt(saltData);
-
+        item.setImageID(R.drawable.apple);
         databaseHelper.addPassword(item);
     }
 }

@@ -2,6 +2,7 @@ package quill.gmail.com.licenta.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +26,7 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
 
     private TextView textViewName;
 
-    private Button buttonNewPassword;
+    private FloatingActionButton buttonNewPassword;
     private DatabaseHelper databaseHelper;
     private ListView listView;
     private int[] passwordIDs;
@@ -37,9 +38,7 @@ public class UsersActivity extends AppCompatActivity implements View.OnClickList
 
         buttonNewPassword = findViewById(R.id.buttonNewPassword);
         listView = findViewById(R.id.User_ListView);
-        databaseHelper = new DatabaseHelper(getApplicationContext(), User.NAME);
         //passwordIDs = databaseHelper.getPasswordIDs();
-        arrayListOfItems = databaseHelper.getItems();
         ArrayList<String> strings = new ArrayList<>();
         for (Item i: arrayListOfItems) {
             strings.add(i.getUsername());

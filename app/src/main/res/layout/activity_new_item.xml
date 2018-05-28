@@ -58,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewAccountName" />
 
     <TextView
-        android:id="@+id/textViewDescription"
+        android:id="@+id/textViewSpinner"
         android:layout_width="368dp"
         android:layout_height="27dp"
         android:layout_marginBottom="8dp"
@@ -160,7 +160,7 @@
         android:hint="Password used for"
         android:inputType="textPersonName"
         android:textAlignment="viewStart"
-        app:layout_constraintBottom_toTopOf="@+id/textViewDescription"
+        app:layout_constraintBottom_toTopOf="@+id/textViewSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"

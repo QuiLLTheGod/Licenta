@@ -29,6 +29,7 @@ public class Item {
     private String usedFor;
     private byte[] salt;
     private int id;
+    private int imageID;
 
     public Item() {
         description = "";
@@ -36,13 +37,14 @@ public class Item {
         password = "";
         usedFor = "";
     }
-    public Item(String password, int id, byte[] salt, String usedFor, String description, String username){
+    public Item(String password, int id, byte[] salt, String usedFor, String description, String username, int imageID){
         setSalt(salt);
         setPassword(password);
         setId(id);
         setDescription(description);
         setUsedFor(usedFor);
         setUsername(username);
+        setImageID(imageID);
     }
     public Item(String[] strings){
         Encryptor encryptor = new Encryptor();
@@ -50,27 +52,12 @@ public class Item {
         try {
             encryptor.encryptText(strings[1]);
             this.salt = encryptor.getEncryption();
-        } catch (UnrecoverableEntryException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (SignatureException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
+        } catch (UnrecoverableEntryException | NoSuchAlgorithmException |
+                KeyStoreException | NoSuchProviderException |
+                InvalidKeyException | NoSuchPaddingException |
+                InvalidAlgorithmParameterException | IOException |
+                BadPaddingException | SignatureException |
+                IllegalBlockSizeException e) {
             e.printStackTrace();
         }
         this.usedFor = strings[2];
@@ -111,32 +98,16 @@ public class Item {
     public void setUsername(String username) {
         this.username = username;
     }
-    public String getDecryptedPassword(){
+    public String getDecryptedPassword() {
         String decryptedPassword = "";
         try {
             Decryptor decryptor = new Decryptor();
             decryptedPassword = decryptor.decryptData(salt);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (UnrecoverableEntryException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
+        } catch (NoSuchAlgorithmException | KeyStoreException
+                | CertificateException | UnrecoverableEntryException |
+                InvalidKeyException | NoSuchPaddingException |
+                InvalidAlgorithmParameterException | IllegalBlockSizeException |
+                BadPaddingException | NoSuchProviderException | IOException e) {
             e.printStackTrace();
         }
         return decryptedPassword;
@@ -147,7 +118,8 @@ public class Item {
                 this.username,
                 this.getDecryptedPassword(),
                 this.usedFor,
-                this.description
+                this.description,
+                String.valueOf(this.imageID)
         };
     }
 
@@ -157,5 +129,13 @@ public class Item {
 
     public void setUsedFor(String usedFor) {
         this.usedFor = usedFor;
+    }
+
+    public int getImageID() {
+        return imageID;
+    }
+
+    public void setImageID(int imageID) {
+        this.imageID = imageID;
     }
 }
