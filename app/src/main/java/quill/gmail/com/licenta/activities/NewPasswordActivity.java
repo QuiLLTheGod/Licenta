@@ -12,27 +12,9 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SignatureException;
-import java.security.UnrecoverableEntryException;
-import java.security.cert.CertificateException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
 import quill.gmail.com.licenta.R;
-import quill.gmail.com.licenta.helper.BCrypt;
-import quill.gmail.com.licenta.helper.Decryptor;
-import quill.gmail.com.licenta.helper.Encryptor;
 import quill.gmail.com.licenta.helper.Generator;
 import quill.gmail.com.licenta.model.Item;
-import quill.gmail.com.licenta.model.User;
 import quill.gmail.com.licenta.sql.DatabaseHelper;
 
 public class NewPasswordActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener {
@@ -68,8 +50,8 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
 
         buttonConfirm = findViewById(R.id.buttonConfirm);
         buttonConfirm.setEnabled(false);
-        buttonCancel = findViewById(R.id.buttonCancel);
-        buttonGenerate = findViewById(R.id.buttonGenerate);
+        buttonCancel = findViewById(R.id.buttonCancelNIA);
+        buttonGenerate = findViewById(R.id.buttonGenerateNIA);
 
         editTextInsertPass = findViewById(R.id.editTextInsertPass);
 
@@ -120,7 +102,7 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.buttonCancel:
+            case R.id.buttonCancelNIA:
                 setResult(RESULT_OK,null);
                 finish();
                 break;
@@ -132,7 +114,7 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
 
-            case R.id.buttonGenerate:
+            case R.id.buttonGenerateNIA:
                 createGenerator();
                 break;
         }

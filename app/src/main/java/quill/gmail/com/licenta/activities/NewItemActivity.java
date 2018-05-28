@@ -1,19 +1,17 @@
 package quill.gmail.com.licenta.activities;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.VectorEnabledTintResources;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -38,15 +36,15 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
 
     private Button buttonSave;
     private Button buttonCancel;
-    private TextView textViewAccountName;
-    private EditText editTextAccountName;
+    private Button buttonInsert;
+    private EditText editTextUsername;
     private EditText editTextDescription;
     private Spinner spinner;
-    private EditText editTextInsertPassword;
+    private EditText editTextPassword;
     private Button buttonGenerate;
-    private TextView textViewGenerated;
     private EditText editTextUsedFor;
     private View view;
+    private TypedArray icons;
 
     private String password = null;
     private DatabaseHelper databaseHelper;
@@ -57,28 +55,29 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
 
         view = findViewById(R.id.activity_new_item);
 
-        buttonCancel = findViewById(R.id.buttonCancel);
-        buttonGenerate = findViewById(R.id.buttonGenerateNewItem);
-        buttonSave = findViewById(R.id.buttonSave);
-        editTextUsedFor = findViewById(R.id.editTextUsedFor);
-        textViewAccountName = findViewById(R.id.textViewAccountName);
-        editTextAccountName = findViewById(R.id.editTextAccountName);
-        editTextDescription = findViewById(R.id.editTextDescription);
-        spinner = findViewById(R.id.spinnerItemDetails);
-        textViewGenerated = findViewById(R.id.textViewGeneratedPass);
-        editTextInsertPassword = findViewById(R.id.editTextInsertPassword);
-
+        buttonCancel = findViewById(R.id.buttonCancelNIA);
+        buttonGenerate = findViewById(R.id.buttonGenerateNIA);
+        buttonSave = findViewById(R.id.buttonSaveNIA);
+        buttonInsert = findViewById(R.id.buttonInsertNIA);
+        editTextUsedFor = findViewById(R.id.editTextUsedForNIA);
+        editTextUsername = findViewById(R.id.editTextUsernameNIA);
+        editTextDescription = findViewById(R.id.editTextDescriptionNIA);
+        spinner = findViewById(R.id.spinnerUsedForNIA);
+        editTextPassword = findViewById(R.id.editTextPasswordNIA);
+        editTextPassword.setClickable(false);
+        editTextPassword.setEnabled(false);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.choices_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
+        icons = this.getResources().obtainTypedArray(R.array.choices_drawables_values);
     }
 
     private void initListeners(){
         buttonSave.setOnClickListener(this);
         buttonGenerate.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);
+        buttonInsert.setOnClickListener(this);
         spinner.setOnItemSelectedListener(this);
 
     }
@@ -100,16 +99,16 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.buttonCancel:
+            case R.id.buttonCancelNIA:
                 setResult(RESULT_CANCELED);
                 finish();
                 break;
-            case R.id.buttonSave:
+            case R.id.buttonSaveNIA:
                 setResult(RESULT_OK);
                 if(checkSave())
                     finish();
                 break;
-            case R.id.buttonGenerateNewItem:
+            case R.id.buttonGenerateNIA:
                 Intent intent = new Intent(getApplicationContext(), NewPasswordActivity.class);
                 startActivityForResult(intent,1);
                 break;
@@ -125,16 +124,15 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     protected boolean checkSave(){
-        if(textViewGenerated.getText().toString().matches("")){
-            if(!editTextInsertPassword.getText().toString().isEmpty())
-                password = editTextInsertPassword.getText().toString().trim();
-            else{
-                Snackbar.make(view, "Please insert your password or generate a new one", Snackbar.LENGTH_LONG).show();
-                return false;
-            }
+
+        if(!editTextPassword.getText().toString().isEmpty())
+            password = editTextPassword.getText().toString().trim();
+        else{
+            Snackbar.make(view, "Please insert your password or generate a new one", Snackbar.LENGTH_LONG).show();
+            return false;
         }
-        if(!editTextAccountName.getText().toString().isEmpty()){
-            item.setUsername(editTextAccountName.getText().toString());
+        if(!editTextUsername.getText().toString().isEmpty()){
+            item.setUsername(editTextUsername.getText().toString());
         }
         else{
             Snackbar.make(view, "Please input the account name you want the password to be associated with", Snackbar.LENGTH_LONG).show();
@@ -159,29 +157,17 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     protected void refreshGUI(){
-        textViewGenerated.setText(password);
+        editTextPassword.setText(password);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (position){
-            case 0:
-                editTextInsertPassword.setEnabled(false);
-                editTextInsertPassword.setClickable(false);
-                buttonGenerate.setEnabled(true);
-                break;
-            case 1:
-                editTextInsertPassword.setEnabled(true);
-                editTextInsertPassword.setClickable(true);
-                buttonGenerate.setEnabled(false);
-                textViewGenerated.setText("");
-
-        }
+        item.setImageID(icons.getResourceId(position, 0));
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
+        item.setImageID(icons.getResourceId(icons.length(), -1));
     }
 
     private void postDataToSQL() {
@@ -217,7 +203,6 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
         item.setSalt(saltData);
-        item.setImageID(R.drawable.apple);
         databaseHelper.addPassword(item);
     }
 }
