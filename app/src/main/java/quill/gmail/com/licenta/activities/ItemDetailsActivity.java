@@ -1,6 +1,8 @@
 package quill.gmail.com.licenta.activities;
 
 import android.app.KeyguardManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,15 +48,23 @@ import android.view.MenuItem;
 
 public class ItemDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
+
+    public enum ButtonPressed{
+        BUTTON_COPY,
+        BUTTON_DELETE,
+        BUTTON_SHOW
+    }
+
     private static final String PASSWORD_MIN_LENGTH = "AAAAAAAAAAAAAAAAAAAAAAAAAAA";
     private Button buttonDelete;
     private Button buttonShowPassword;
-    private Button buttonEdit;
+    private Button buttonCopy;
     private TextView textViewUsedfor;
     private EditText editTextPassword;
     private EditText editTextUsername;
     private EditText editTextDetails;
 
+    private ButtonPressed buttonPressed = ButtonPressed.BUTTON_SHOW;
 
     private DatabaseHelper databaseHelper;
     private String id;
@@ -78,6 +88,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     private KeyguardManager keyguardManager;
 
     private Context context;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,8 +161,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     private void initViews(){
         buttonShowPassword = findViewById(R.id.buttonIDAShowPassword);
         buttonDelete = findViewById(R.id.buttonItemDetailsDelete);
-        buttonEdit = findViewById(R.id.buttonIDAEdit);
-
+        buttonCopy = findViewById(R.id.buttonIDACopy);
         editTextDetails = findViewById(R.id.editTextIDADetails);
         editTextUsername = findViewById(R.id.editTextIDAUsername);
         editTextPassword = findViewById(R.id.editTextIDAPassword);
@@ -169,11 +181,15 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         editTextUsername.setEnabled(false);
         editTextUsername.setText(PASSWORD_MIN_LENGTH);
         editTextUsername.setTransformationMethod(new PasswordTransformationMethod());
+
+        editTextDetails.setEnabled(false);
+        editTextDetails.setClickable(false);
     }
     private void initListeners(){
 
-        buttonDelete.setOnClickListener(this);
-        buttonShowPassword.setOnClickListener( new PurchaseButtonClickListener(defaultCipher, DEFAULT_KEY_NAME));
+        buttonDelete.setOnClickListener(new FingerPrintButtonClickListener(defaultCipher, DEFAULT_KEY_NAME));
+        buttonShowPassword.setOnClickListener( new FingerPrintButtonClickListener(defaultCipher, DEFAULT_KEY_NAME));
+        buttonCopy.setOnClickListener(new FingerPrintButtonClickListener(defaultCipher, DEFAULT_KEY_NAME));
     }
 
     public void showUserAndPassword(){
@@ -186,18 +202,23 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.buttonItemDetailsDelete:
-                createAlertDial();
-                break;
+
         }
     }
 
-    private class PurchaseButtonClickListener implements View.OnClickListener {
+    private void copyToClipboard(){
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("password", password);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(this, "Successfully copied the password to clipboard", Toast.LENGTH_LONG).show();
+    }
+
+    private class FingerPrintButtonClickListener implements View.OnClickListener {
 
         Cipher mCipher;
         String mKeyName;
 
-        PurchaseButtonClickListener(Cipher cipher, String keyName) {
+        FingerPrintButtonClickListener(Cipher cipher, String keyName) {
             mCipher = cipher;
             mKeyName = keyName;
         }
@@ -205,8 +226,17 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         @Override
         public void onClick(View view) {
 
-            // Set up the crypto object for later. The object will be authenticated by use
-            // of the fingerprint.
+            switch (view.getId()){
+                case R.id.buttonItemDetailsDelete:
+                    buttonPressed = ButtonPressed.BUTTON_DELETE;
+                    break;
+                case R.id.buttonIDACopy:
+                    buttonPressed = ButtonPressed.BUTTON_COPY;
+                    break;
+                case R.id.buttonIDAShowPassword:
+                    buttonPressed = ButtonPressed.BUTTON_SHOW;
+                    break;
+            }
 
             if(!fingerprintManager.isHardwareDetected()){
                 gotoBackup();
@@ -214,7 +244,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             }
 
             if (!keyguardManager.isKeyguardSecure()) {
-                // Show a message that the user hasn't set up a fingerprint or lock screen.
+
                 Toast.makeText(context,
                         "Secure lock screen hasn't set up.\n"
                                 + "Go to 'Settings -> Security -> Fingerprint' to set up a fingerprint",
@@ -224,7 +254,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             }
             if (!fingerprintManager.hasEnrolledFingerprints()) {
 
-                // This happens when no fingerprints are registered.
+
                 Toast.makeText(context,
                         "Go to 'Settings -> Security -> Fingerprint' and register at least one" +
                                 " fingerprint",
@@ -236,8 +266,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
             if (initCipher(mCipher, mKeyName)) {
 
-                // Show the fingerprint dialog. The user has the option to use the fingerprint with
-                // crypto, or you can fall back to using a server-side verified password.
+
                 FingerprintDialogFragment fragment
                         = new FingerprintDialogFragment();
                 fragment.setCryptoObject(new FingerprintManager.CryptoObject(mCipher));
@@ -252,11 +281,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                             FingerprintDialogFragment.Stage.NEW_FINGERPRINT_ENROLLED);
                 }
                 fragment.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
-            } else {
-                // This happens if the lock screen has been disabled or or a fingerprint got
-                // enrolled. Thus show the dialog to authenticate with their password first
-                // and ask the user if they want to authenticate with fingerprints in the
-                // future
+            }
+            else {
+
                 FingerprintDialogFragment fragment
                         = new FingerprintDialogFragment();
                 fragment.setCryptoObject(new FingerprintManager.CryptoObject(mCipher));
@@ -265,6 +292,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                 fragment.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
             }
         }
+
     }
 
 
@@ -284,7 +312,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==RESULT_OK && requestCode==CODE_AUTHENTICATION_VERIFICATION)
         {
-            showUserAndPassword();
+            doAction();
             Toast.makeText(this, "Success: Verified user's identity", Toast.LENGTH_SHORT).show();
         }
         else
@@ -294,28 +322,19 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void createKey(String keyName, boolean invalidatedByBiometricEnrollment) {
-        // The enrolling flow for fingerprint. This is where you ask the user to set up fingerprint
-        // for your flow. Use of keys is necessary if you need to know if the set of
-        // enrolled fingerprints has changed.
+
         try {
             mKeyStore.load(null);
-            // Set the alias of the entry in Android KeyStore where the key will appear
-            // and the constrains (purposes) in the constructor of the Builder
 
             KeyGenParameterSpec.Builder builder = new KeyGenParameterSpec.Builder(keyName,
                     KeyProperties.PURPOSE_ENCRYPT |
                             KeyProperties.PURPOSE_DECRYPT)
                     .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                    // Require the user to authenticate with a fingerprint to authorize every use
-                    // of the key
+
                     .setUserAuthenticationRequired(true)
                     .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7);
 
-            // This is a workaround to avoid crashes on devices whose API level is < 24
-            // because KeyGenParameterSpec.Builder#setInvalidatedByBiometricEnrollment is only
-            // visible on API level +24.
-            // Ideally there should be a compat library for KeyGenParameterSpec.Builder but
-            // which isn't available yet.
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 builder.setInvalidatedByBiometricEnrollment(invalidatedByBiometricEnrollment);
             }
@@ -324,6 +343,20 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException
                 | CertificateException | IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void doAction(){
+        switch (buttonPressed){
+            case BUTTON_COPY:
+                copyToClipboard();
+                break;
+            case BUTTON_SHOW:
+                showUserAndPassword();
+                break;
+            case BUTTON_DELETE:
+                createAlertDial();
+                break;
         }
     }
 
@@ -338,6 +371,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             setResult(RESULT_OK, null);
             finish();
         });
+
         builder.setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> {
             //do nothing
         });

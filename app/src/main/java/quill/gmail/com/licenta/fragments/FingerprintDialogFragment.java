@@ -81,8 +81,8 @@ public class FingerprintDialogFragment extends DialogFragment
 
         mFingerprintUiHelper = new quill.gmail.com.licenta.helper.FingerprintHelper(
                 mActivity.getSystemService(FingerprintManager.class),
-                (ImageView) v.findViewById(R.id.fingerprint_icon),
-                (TextView) v.findViewById(R.id.fingerprint_status), this);
+                v.findViewById(R.id.fingerprint_icon),
+                v.findViewById(R.id.fingerprint_status), this);
         updateStage();
 
         // If fingerprint authentication is not available, switch immediately to the backup
@@ -212,7 +212,7 @@ public class FingerprintDialogFragment extends DialogFragment
         // Callback from FingerprintHelper. Let the activity know that authentication was
         // successful.
         //     mActivity.onPurchased(true /* withFingerprint */, mCryptoObject);
-        mActivity.showUserAndPassword();
+        mActivity.doAction();
         dismiss();
     }
 
