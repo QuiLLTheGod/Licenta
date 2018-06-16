@@ -67,7 +67,7 @@ public class InputValidation {
         return true;
     }
 
-    private void hideKeyboardFrom(View view){
+    public void hideKeyboardFrom(View view){
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromInputMethod(view.getWindowToken(), WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 

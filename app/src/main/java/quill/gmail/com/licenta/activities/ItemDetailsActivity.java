@@ -76,7 +76,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
     private static int CODE_AUTHENTICATION_VERIFICATION=241;
     private static final String DIALOG_FRAGMENT_TAG = "myFragment";
-    private static final String SECRET_MESSAGE = "Very secret message";
+
     private static final String KEY_NAME_NOT_INVALIDATED = "key_not_invalidated";
     public static final String DEFAULT_KEY_NAME = "default_key";
 
@@ -210,7 +210,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("password", password);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(this, "Successfully copied the password to clipboard", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.success_copy), Toast.LENGTH_LONG).show();
     }
 
     private class FingerPrintButtonClickListener implements View.OnClickListener {
@@ -246,8 +246,8 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             if (!keyguardManager.isKeyguardSecure()) {
 
                 Toast.makeText(context,
-                        "Secure lock screen hasn't set up.\n"
-                                + "Go to 'Settings -> Security -> Fingerprint' to set up a fingerprint",
+                        "Secure lock screen nu este prezent.\n"
+                                + "Du-te la 'Settings -> Security -> Fingerprint' pentru a seta amprenta",
                         Toast.LENGTH_LONG).show();
 
                 return;
@@ -256,8 +256,8 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
 
 
                 Toast.makeText(context,
-                        "Go to 'Settings -> Security -> Fingerprint' and register at least one" +
-                                " fingerprint",
+                        "Du-te 'Settings -> Security -> Fingerprint' şi înregistreaă o nouă" +
+                                " amprentă",
                         Toast.LENGTH_LONG).show();
                 return;
             }
@@ -301,11 +301,11 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         KeyguardManager km = (KeyguardManager)getSystemService(KEYGUARD_SERVICE);
         if(km.isKeyguardSecure()) {
 
-            Intent i = km.createConfirmDeviceCredentialIntent("Authentication required", "password");
+            Intent i = km.createConfirmDeviceCredentialIntent("Autentificare necesară", "parolă");
             startActivityForResult(i, CODE_AUTHENTICATION_VERIFICATION);
         }
         else
-            Toast.makeText(this, "No any security setup done by user(pattern or password or pin or fingerprint", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Utilizatorul nu a creat nici o metodă de securitate", Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -313,11 +313,11 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         if(resultCode==RESULT_OK && requestCode==CODE_AUTHENTICATION_VERIFICATION)
         {
             doAction();
-            Toast.makeText(this, "Success: Verified user's identity", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Success: Am validat identitatea utilizatorului", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            Toast.makeText(this, "Failure: Unable to verify user's identity", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Eşec: Nu am reuşit să validez identitatea utilizatorului", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -365,7 +365,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle("");
-        builder.setMessage("Are you sure you want to delete this password? This action cannot be undone!");
+        builder.setMessage(getString(R.string.delete_question));
         builder.setPositiveButton("Confirm", (dialogInterface, i) -> {
             postDataToSQL();
             setResult(RESULT_OK, null);

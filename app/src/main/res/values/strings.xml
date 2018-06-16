@@ -1,51 +1,76 @@
 <resources>
     <string name="app_name">Licenta</string>
-    <string name="hint_name">Name</string>
+    <string name="hint_name">Nume</string>
     <string name="hint_email">Email</string>
-    <string name="hint_user">Username</string>
-    <string name="hint_password">Password</string>
-    <string name="hint_confirm_password">Confirm Password</string>
-    <string name="text_login">Login</string>
-    <string name="text_register">Register</string>
-    <string name="error_message_name">Enter Full Name</string>
-    <string name="error_message_email">Enter Valid Email</string>
-    <string name="error_message_password">Enter valid Password</string>
+    <string name="hint_user">Utilizator</string>
+    <string name="hint_password">Parolă</string>
+    <string name="hint_confirm_password">Confirmă parola</string>
+    <string name="text_login">Logare</string>
+    <string name="text_register">înregistrare</string>
+    <string name="error_message_name">Introdu-ţi numele întreg</string>
+    <string name="error_message_email">Introdu o adresă de e-mail validă</string>
+    <string name="error_message_password">Introdu o parolă validă</string>
     <string name="succes_message">Success</string>
-    <string name="text_not_member">No account yet? Create one</string>
-    <string name="text_already_member">Already a member? Login</string>
-    <string name="error_email_exists">Email already exists</string>
-    <string name="too_many_numbers">Please input more length</string>
-    <string name="no_input">No input</string>
-    <string name="please_select">Please select characters</string>
-    <string name="error_password_match">Password does not match</string>
-    <string name="password_length">Password length: </string>
-    <string name="password_options">Password options:</string>
+    <string name="text_not_member">Nu ai cont? crează-ţi!</string>
+    <string name="text_already_member">Ai deja cont? Loghează-te!</string>
+    <string name="error_email_exists">E-mailul este deja folosit de alt utilizator</string>
+    <string name="too_many_numbers">Introdu o valoare mai mare</string>
+    <string name="no_input">Nu ai introdus nimic</string>
+    <string name="please_select">Te rog selecteaza caracterele pre care doreşti să le foloseşti</string>
+    <string name="error_password_match">Parolele introduse nu sunt la fel!</string>
+    <string name="password_length">Lungimea parolei: </string>
+    <string name="password_options">Opţiunile parolei:</string>
     <string name="high_char">A-Z</string>
     <string name="low_char">a-z</string>
     <string name="more_options">Extra</string>
     <string name="numbers">0–9</string>
-    <string name="save">Save</string>
-    <string name="cancel">Cancel</string>
-    <string name="confirm">Confirm</string>
-    <string name="generate">Generate </string>
+    <string name="save">Salvează</string>
+    <string name="cancel">Anulează</string>
+    <string name="confirm">Confirmă</string>
+    <string name="generate">Creează </string>
     <string name="special">Special</string>
-    <string name="error_valid_username_password">Wrong username or password</string>
+    <string name="insert">Inserează</string>
+    <string name="error_valid_username_password">Nume de utilizator sau parolă greşite</string>
     <string name="nrOFnr">nr:</string>
 
-    <string name="fingerprint_description">Confirm fingerprint to continue</string>
-    <string name="fingerprint_hint">Touch sensor</string>
-    <string name="fingerprint_not_recognized">Fingerprint not recognized. Try again</string>
-    <string name="fingerprint_success">Fingerprint recognized</string>
-    <string name="item_title">White Mesh Pluto Backpack</string>
+    <string name="fingerprint_description">Confirmă amprenta pentru a continua</string>
+    <string name="fingerprint_hint">Atinge senzorul de amprente</string>
+    <string name="fingerprint_not_recognized">Amprentă nerecunoscută. Încearcă din nou!</string>
+    <string name="fingerprint_success">Amprentă recunoscută</string>
+
     <string name="item_price">$62.68</string>
     <string name="item_description">Mesh backpack in white. Black textile trim throughout.</string>
     <string name="purchase_done">Purchase successful</string>
-    <string name="new_fingerprint_enrolled_description">A new fingerprint was added to this device, so your password is required.</string>
-    <string name="use_fingerprint_in_future">Use fingerprint in the future</string>
+    <string name="new_fingerprint_enrolled_description">O nouă amprentă a fost adăugată pe dispozitiv</string>
+    <string name="use_fingerprint_in_future">Foloseşte amprenta pentru a te autentifica in viitor</string>
     <string name="use_fingerprint_to_authenticate_title">Use fingerprint to authenticate</string>
     <string name="use_fingerprint_to_authenticate_key">use_fingerprint_to_authenticate_key</string>
     <string name="description_bugdroid_icon">Android bugdroid image</string>
     <string name="description_fingerprint_icon">Fingerprint icon</string>
+
+    <string name="no_file_selected">Nu aţi selectat nici un fişier</string>
+    <string name="select_file">Selectează fişierul</string>
+    <string name="success_delete">Ştergere efectuată</string>
+    <string name="success_import">Importare efectuată</string>
+    <string name="delete_question">Doreiţi ştergerea fişierului de pe Drive?
+        Această acţiune nu poate fi dată înapoi</string>
+    <string name="success_export">Exportare efectuată</string>
+    <string name="success_copy">Am copiat parola în clipboard</string>
+    <string name="insert_password">Scrie-ţi parola mai jos:</string>
+
+    <string name="details">Detalii</string>
+    <string name="username">Utilizator</string>
+    <string name="delete">Şterge</string>
+    <string name="password">Parolă</string>
+    <string name="show">Afişează</string>
+    <string name="copy">Copiază</string>
+    <string name="description">Descriere</string>
+    <string name="used_for">Parola este folosită pentru:</string>
+
+    <string name="settings">Setări</string>
+    <string name="export">Export</string>
+    <string name="imported">Import</string>
+
 
     <item name="visible" type="id" />
     <item name="masked" type="id" />
@@ -63,7 +88,7 @@
         <item>Origin</item>
         <item>Github</item>
         <item>Apple</item>
-        <item>Other</item>
+        <item>Altul</item>
     </string-array>
 
     <integer-array name="choices_drawables_values">

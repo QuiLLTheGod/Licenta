@@ -45,6 +45,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import quill.gmail.com.licenta.R;
 import quill.gmail.com.licenta.helper.CSVwriter;
 import quill.gmail.com.licenta.model.Item;
 import quill.gmail.com.licenta.model.User;
@@ -115,7 +116,7 @@ public class ExportGoogleDriveActivity extends Activity {
                 Log.i(TAG, "creator request code");
 
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(getApplicationContext(), "Exported successfully", Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(), getString(R.string.success_export), Toast.LENGTH_LONG);
                 }
                 this.finish();
                 break;

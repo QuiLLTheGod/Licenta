@@ -14,6 +14,8 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.tasks.Task;
+
 import quill.gmail.com.licenta.R;
 import quill.gmail.com.licenta.helper.InputValidation;
 import quill.gmail.com.licenta.model.User;
@@ -51,24 +53,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initObjects();
     }
 
-    /*
-    *   Initialize the views for the login activity.
-    *
-    * */
-
 
     private void initViews(){
-        nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
+        nestedScrollView =  findViewById(R.id.nestedScrollView);
 
-        textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
-        textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
+        textInputLayoutEmail =  findViewById(R.id.textInputLayoutEmail);
+        textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
 
-        textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
-        textInputEditTextUser  = (TextInputEditText) findViewById(R.id.textInputEditTextUser);
+        textInputEditTextPassword =  findViewById(R.id.textInputEditTextPassword);
+        textInputEditTextUser  = findViewById(R.id.textInputEditTextUser);
 
-        appCompatButtonLogin = (AppCompatButton) findViewById(R.id.appCompatButtonLogin);
+        appCompatButtonLogin = findViewById(R.id.appCompatButtonLogin);
 
-        textViewLinkRegister = (AppCompatTextView) findViewById(R.id.textViewLinkRegister);
+        textViewLinkRegister =  findViewById(R.id.textViewLinkRegister);
 
         progressBar = findViewById(R.id.progressbar);
     }
@@ -94,16 +91,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void verifyFromSQLite(){
         databaseHelper = new DatabaseHelper(activity, textInputEditTextUser.getText().toString().trim());
-/*
-        if(!inputValidation.isinputEditTextFilled(textInputEditTextUser, textInputLayoutEmail, getString(R.string.error_email_exists)))
-            return;
 
-        if(!inputValidation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email)))
-        return;
+       // if(!inputValidation.isinputEditTextFilled(textInputEditTextUser, textInputLayoutEmail, getString(R.string.error_email_exists)))
+        //    return;
 
-        if(!inputValidation.isinputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password)))
-            return;
-  */
+       // if(!inputValidation.isinputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password)))
+        //    return;
+
         if(databaseHelper.checkUser(textInputEditTextUser.getText().toString().trim(),
                                     textInputEditTextPassword.getText().toString().trim())){
             User.NAME = textInputEditTextUser.getText().toString().trim();
@@ -112,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(accountsIntent);
         }
         else{
+            inputValidation.hideKeyboardFrom(textInputEditTextUser);
+            inputValidation.hideKeyboardFrom(textInputEditTextPassword);
             Snackbar.make(nestedScrollView, getString(R.string.error_valid_username_password), Snackbar.LENGTH_LONG).show();
         }
     }

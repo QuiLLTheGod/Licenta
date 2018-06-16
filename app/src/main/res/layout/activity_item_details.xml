@@ -12,7 +12,7 @@
         android:layout_height="19dp"
         android:layout_marginBottom="12dp"
         android:layout_marginStart="8dp"
-        android:text="Details:"
+        android:text="@string/details"
         android:textAlignment="viewStart"
         app:layout_constraintBottom_toTopOf="@+id/editTextIDADetails"
         app:layout_constraintStart_toStartOf="parent" />
@@ -23,7 +23,7 @@
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
-        android:text="Username:"
+        android:text="@string/username"
         android:textAlignment="viewStart"
         app:layout_constraintBottom_toTopOf="@+id/editTextIDAUsername"
         app:layout_constraintStart_toStartOf="parent" />
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Delete"
+        android:text="@string/delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -59,7 +59,7 @@
         android:layout_height="17dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
-        android:text="Password:"
+        android:text="@string/password"
         app:layout_constraintBottom_toTopOf="@+id/editTextIDAPassword"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Show"
+        android:text="@string/show"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonItemDetailsDelete" />
 
@@ -128,7 +128,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/ripple_effect"
-        android:text="COPY"
+        android:text="@string/copy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonIDAShowPassword" />
 </android.support.constraint.ConstraintLayout>

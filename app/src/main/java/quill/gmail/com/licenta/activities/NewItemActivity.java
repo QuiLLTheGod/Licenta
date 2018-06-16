@@ -128,12 +128,12 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
         builder.setCancelable(true);
         builder.setTitle("");
         builder.setView(editText);
-        builder.setMessage("Insert your password here:");
-        builder.setPositiveButton("Confirm", (dialog, which) -> {
+        builder.setMessage(R.string.insert_password);
+        builder.setPositiveButton("Confirmă", (dialog, which) -> {
             password = editText.getText().toString();
             refreshGUI();
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> password = editText.getText().toString());
+        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> password = editText.getText().toString());
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -151,28 +151,29 @@ public class NewItemActivity extends AppCompatActivity implements View.OnClickLi
         if(!editTextPassword.getText().toString().isEmpty())
             password = editTextPassword.getText().toString().trim();
         else{
-            Snackbar.make(view, "Please insert your password or generate a new one", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(view, "Te rog introdu o parolă sau generază una nouă", Snackbar.LENGTH_LONG).show();
             return false;
         }
         if(!editTextUsername.getText().toString().isEmpty()){
             item.setUsername(editTextUsername.getText().toString());
         }
         else{
-            Snackbar.make(view, "Please input the account name you want the password to be associated with", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(view, "Te rog introdu numele de utilizator asociat parolei", Snackbar.LENGTH_LONG).show();
             return false;
         }
         if(!editTextDescription.getText().toString().isEmpty()){
             item.setDescription(editTextDescription.getText().toString().trim());
         }
         else {
-            Snackbar.make(view, "Please add some details so you remember what the password is for", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(view, "Te rog adaugă nişte detalii suplimentare", Snackbar.LENGTH_LONG).show();
             return false;
         }
         if(!editTextUsedFor.getText().toString().isEmpty()){
             item.setUsedFor(editTextUsedFor.getText().toString().trim());
         }
         else {
-            Snackbar.make(view, "Please specify what the password is used for", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(view, "Te rog specifică pentru ce este folosită parola" +
+                    " şi alege una dintre metodele de mai jos", Snackbar.LENGTH_LONG).show();
             return false;
         }
         postDataToSQL();

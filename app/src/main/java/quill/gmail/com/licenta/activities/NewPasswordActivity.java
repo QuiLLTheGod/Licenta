@@ -53,7 +53,7 @@ public class NewPasswordActivity extends AppCompatActivity implements View.OnCli
         buttonCancel = findViewById(R.id.buttonCancelNIA);
         buttonGenerate = findViewById(R.id.buttonGenerateNIA);
 
-        editTextInsertPass = findViewById(R.id.editTextInsertPass);
+      //  editTextInsertPass = findViewById(R.id.editTextInsertPass);
 
         textViewGenPass = findViewById(R.id.textViewGenerated);
 

@@ -74,7 +74,7 @@ public class ImportGoogleDriveActivity extends Activity {
                         driveId -> retrieveContents(driveId.asDriveFile()))
                 .addOnFailureListener(this, e -> {
                     Log.e(TAG, "No file selected", e);
-                    Toast.makeText(this, "No file selected",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.no_file_selected),Toast.LENGTH_LONG).show();
                     finish();
                 });
     }
@@ -83,7 +83,7 @@ public class ImportGoogleDriveActivity extends Activity {
         OpenFileActivityOptions openOptions =
                 new OpenFileActivityOptions.Builder()
                         .setSelectionFilter(Filters.eq(SearchableField.MIME_TYPE, MIME_CSV))
-                        .setActivityTitle("Select file:")
+                        .setActivityTitle(getString(R.string.select_file))
                         .build();
         return pickItem(openOptions);
     }
@@ -138,7 +138,7 @@ public class ImportGoogleDriveActivity extends Activity {
                 .delete(file)
                 .addOnSuccessListener(this,
                         aVoid -> {
-                            Toast.makeText(this, "Successfully deleted file from Drive", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, getString(R.string.success_delete), Toast.LENGTH_LONG).show();
                             finish();
                         })
                 .addOnFailureListener(this, e -> {
@@ -150,9 +150,9 @@ public class ImportGoogleDriveActivity extends Activity {
     private void createAlertDial(DriveFile file){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
-        builder.setTitle("Imported successfully");
-        builder.setMessage("Do you want to delete passwords from Drive? This action cannot be undone!");
-        builder.setPositiveButton("Confirm", (dialogInterface, i) -> {
+        builder.setTitle(getString(R.string.success_import));
+        builder.setMessage(getString(R.string.delete_question));
+        builder.setPositiveButton(getString(R.string.confirm), (dialogInterface, i) -> {
             deleteFile(file);
             finish();
         });
