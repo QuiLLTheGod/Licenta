@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#F8881B</color>
+    <color name="colorPrimaryDark">#2E354F</color>
     <color name="colorAccent">#2E354F</color>
     <color name="colorText">#F8881B</color>
-    <color name="colorTextHint">#2E354F</color>
+    <color name="colorTextHint">#F8881B</color>
     <color name="warning_color">#FFFFFF</color>
     <color name="hint_color">#42000000</color>
     <color name="success_color">#009688</color>
+
+    <color name="dark">#2E354F</color>
+    <color name="white">#FFFFFF</color>
+    <color name="orange">#F8881B</color>
 </resources>
