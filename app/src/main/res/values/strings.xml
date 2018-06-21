@@ -14,6 +14,8 @@
     <string name="text_not_member">Nu ai cont? crează-ţi!</string>
     <string name="text_already_member">Ai deja cont? Loghează-te!</string>
 
+    <string name="log_out">Delogare</string>
+
     <string name="too_many_numbers">Introdu o valoare mai mare</string>
     <string name="no_input">Nu ai introdus nimic</string>
     <string name="please_select">Te rog selecteaza caracterele pre care doreşti să le foloseşti</string>

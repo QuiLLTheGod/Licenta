@@ -183,7 +183,7 @@ public class ItemsListActivity extends AppCompatActivity implements View.OnClick
                 Intent intent3 = new Intent(this, ImportGoogleDriveActivity.class);
                 startActivity(intent3);
                 break;
-            case R.id.action_settings:
+            case R.id.log_out:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;

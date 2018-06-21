@@ -5,11 +5,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     tools:context=".activities.NewItemActivity">
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/settings"
-        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_export"
         android:orderInCategory="110"
@@ -19,5 +15,10 @@
         android:id="@+id/action_import"
         android:orderInCategory="110"
         android:title="@string/imported"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/log_out"
+        android:orderInCategory="100"
+        android:title="@string/log_out"
         app:showAsAction="never" />
 </menu>
