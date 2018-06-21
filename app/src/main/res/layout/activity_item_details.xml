@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="quill.gmail.com.licenta.activities.ItemDetailsActivity">
+    tools:context="priseceanpaul.gmail.com.licenta.quill.priseceanpaul.com.licenta.activities.ItemDetailsActivity">
 
     <TextView
         android:id="@+id/textViewIDADetails"

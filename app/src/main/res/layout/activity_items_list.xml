@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ItemsListActivity">
+    tools:context="priseceanpaul.gmail.com.licenta.activities.ItemsListActivity">
 
 
     <android.support.v4.widget.NestedScrollView
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="10dp"
-        android:src="@drawable/add"
+        android:src="@drawable/add2"
         app:backgroundTint="@color/colorText" />
 
 </FrameLayout>

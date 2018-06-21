@@ -1,19 +1,19 @@
 <resources>
     <string name="app_name">Licenta</string>
     <string name="hint_name">Nume</string>
-    <string name="hint_email">Email</string>
+
     <string name="hint_user">Utilizator</string>
     <string name="hint_password">Parolă</string>
     <string name="hint_confirm_password">Confirmă parola</string>
     <string name="text_login">Logare</string>
     <string name="text_register">înregistrare</string>
     <string name="error_message_name">Introdu-ţi numele întreg</string>
-    <string name="error_message_email">Introdu o adresă de e-mail validă</string>
+
     <string name="error_message_password">Introdu o parolă validă</string>
     <string name="succes_message">Success</string>
     <string name="text_not_member">Nu ai cont? crează-ţi!</string>
     <string name="text_already_member">Ai deja cont? Loghează-te!</string>
-    <string name="error_email_exists">E-mailul este deja folosit de alt utilizator</string>
+
     <string name="too_many_numbers">Introdu o valoare mai mare</string>
     <string name="no_input">Nu ai introdus nimic</string>
     <string name="please_select">Te rog selecteaza caracterele pre care doreşti să le foloseşti</string>
@@ -70,7 +70,7 @@
     <string name="settings">Setări</string>
     <string name="export">Export</string>
     <string name="imported">Import</string>
-
+    <string name="password_description">Descrierea parolei</string>
 
     <item name="visible" type="id" />
     <item name="masked" type="id" />
